@@ -13,9 +13,11 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 
+
 /**
  * Created by ubuntu1 on 18/12/15.
  */
+
 public class CustomVolleyRequestQueue {
     private static CustomVolleyRequestQueue mInstance;
 private static Context mCtx;
@@ -30,7 +32,7 @@ private ImageLoader mImageLoader;
             mImageLoader = new ImageLoader(mRequestQueue,
                     new ImageLoader.ImageCache() {
                         private final LruCache<String, Bitmap>
-                                cache = new LruCache<String, Bitmap>(20);
+                                cache = new LruCache<String, Bitmap>(100);
 
                         @Override
                         public Bitmap getBitmap(String url) {

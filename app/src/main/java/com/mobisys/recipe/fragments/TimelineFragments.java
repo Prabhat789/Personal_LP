@@ -246,6 +246,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         TimeLine timeLine = new TimeLine();
         timeLine.setPostImage(file);
         timeLine.setDateTime(timeStamp);
+        timeLine.setUserIcon(getUserImage());
         timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
         timeLine.setUserName("Prabhat Tiwari");
         timeLine.setBodyText("Prabhat tiwari is a very good boy , " +
@@ -275,7 +276,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
                     allPosts.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     mRecyclerView.invalidate();
-                   // mRecyclerView.scrollToPosition(allPosts.size()-1);
+                    // mRecyclerView.scrollToPosition(allPosts.size()-1);
                 } else {
                     Log.d("message", "Error: " + e.getMessage());
                 }
@@ -285,6 +286,10 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
 
     private void refreshAllPost() {
         receiveAllPost();
+    }
+
+    private String getUserImage(){
+        return ParseUser.getCurrentUser().getString("profileImage");
     }
 
 }

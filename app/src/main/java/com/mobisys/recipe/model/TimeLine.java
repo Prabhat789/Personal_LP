@@ -16,6 +16,9 @@ public class TimeLine extends ParseObject {
     public String getUserName() {
         return getString("userName");
     }
+    public String getUserIcon() {
+        return getString("userIcon");
+    }
     public String getBodyText() {
         return getString("bodyText");
     }
@@ -27,6 +30,9 @@ public class TimeLine extends ParseObject {
     }
     public void setUserId(String userId) {
         put("userId", userId);
+    }
+    public void setUserIcon(String userIcon) {
+        put("userIcon", userIcon);
     }
     public void setUserName(String userName) {
         put("userName", userName);

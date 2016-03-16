@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +13,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.model.Message;
+import com.mobisys.recipe.util.CircularImage;
 import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 
 import java.math.BigInteger;
@@ -35,7 +35,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
         TextView txtBody;
-        ImageView imageLeft, imageRight;
+        NetworkImageView imageLeft, imageRight;
         LinearLayout llBody;
 
         public DataObjectHolder(View itemView) {
@@ -88,11 +88,12 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
 
 
         }
-        final NetworkImageView profileView = (NetworkImageView) (isMe ? holder.imageRight : holder.imageLeft);
+        final CircularImage profileView = (CircularImage) (isMe ? holder.imageRight : holder.imageLeft);
         try {
             if (mDataset.get(position).getProfileImage().length() != 0) {
 
-                imageLoader.get( mDataset.get(position).getProfileImage(), ImageLoader.getImageListener(
+                //loadImage(mDataset.get(position).getProfileImage(), profileView, mContext);
+               imageLoader.get( mDataset.get(position).getProfileImage(), ImageLoader.getImageListener(
                         profileView,
                         R.mipmap.ic_launcher, R.mipmap.ic_launcher));
                 profileView.setImageUrl( mDataset.get(position).getProfileImage(), imageLoader);
@@ -102,6 +103,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
                         profileView,
                         R.mipmap.ic_launcher, R.mipmap.ic_launcher));
                 profileView.setImageUrl(mDataset.get(position).getProfileImage(), imageLoader);
+                //loadImage(mDataset.get(position).getUserId(),profileView,mContext);
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -142,5 +144,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
         return mDataset.size();
     }
 
-
+    /*public void loadImage( String url,CircularImage imageView, Context context) {
+        Ion.with(context).load(url).intoImageView(imageView);
+    }*/
 }

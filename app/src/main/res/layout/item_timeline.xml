@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        android:focusable="true"
         android:elevation="5dp"
+        android:clickable="true"
+        android:focusable="true"
         card_view:cardCornerRadius="4dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,29 +25,43 @@
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_camera"
                 android:id="@+id/imgUser"
-                app:border="true"
-                app:border_color="@color/red"
-                app:border_width="1.5dp"
-                app:shadow="true"/>
-            <TextView
+                android:elevation="4dp"
+                />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:textSize="16dp"
+                android:orientation="vertical"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:text="Prabhat tiwari is a very good boy , and he is an engineer in pune, working in software company."
-                android:textColor="@color/smoke_white"
-                android:id="@+id/txtTimeline"/>
+                android:layout_marginRight="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="17sp"
+                    android:id="@+id/txtUsername"
+                    android:textColor="@color/black"
+                    android:text=""/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textSize="16dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Prabhat tiwari is a very good boy , and he is an engineer in pune, working in software company."
+                    android:textColor="@color/smoke_white"
+                    android:id="@+id/txtTimeline"/>
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
         <com.android.volley.toolbox.NetworkImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:elevation="5dp"
             android:adjustViewBounds="true"
             android:id="@+id/imgPost"/>
 
@@ -67,6 +82,7 @@
                 android:paddingRight="5dp"
                 android:textAllCaps="false"
                 android:textSize="12sp"
+                android:id="@+id/btnComments"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/smoke_white"
                 android:layout_alignParentTop="true"
@@ -76,7 +92,8 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New CheckBox"
+                android:text=""
+                android:button="@drawable/check_like"
                 android:id="@+id/checkBox2"
                 android:layout_centerVertical="true"
                 android:textColor="@color/smoke_white"

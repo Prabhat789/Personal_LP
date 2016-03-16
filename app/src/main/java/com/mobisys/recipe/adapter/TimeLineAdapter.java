@@ -5,12 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.model.TimeLine;
+import com.mobisys.recipe.util.CircularImage;
 import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 
 import java.util.List;
@@ -27,13 +29,18 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
-        TextView txtBody;
+        TextView txtBody, txtUsername;
         NetworkImageView imagePost;
+        CircularImage userIcon;
+        Button btnComments;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             txtBody = (TextView) itemView.findViewById(R.id.txtTimeline);
             imagePost = (NetworkImageView)itemView.findViewById(R.id.imgPost);
+            userIcon = (CircularImage)itemView.findViewById(R.id.imgUser);
+            txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
+            btnComments = (Button)itemView.findViewById(R.id.btnComments);
 
         }
 
@@ -59,10 +66,26 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 
         holder.txtBody.setText(mDataset.get(position).getBodyText());
-        imageLoader.get( mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
+        holder.txtUsername.setText(mDataset.get(position).getUserName());
+        imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
                 holder.imagePost,
                 R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-        holder.imagePost.setImageUrl( mDataset.get(position).getPostImage().getUrl(), imageLoader);
+        holder.imagePost.setImageUrl(mDataset.get(position).getPostImage().getUrl(), imageLoader);
+        imageLoader.get(mDataset.get(position).getUserIcon(), ImageLoader.getImageListener(
+                holder.userIcon,
+                R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+        holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
+
+        /*loadImage(mDataset.get(position).getPostImage().getUrl(),holder.imagePost,mContext);
+        loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);*/
+
+
+        holder.btnComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -75,6 +98,19 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public int getItemCount() {
         return mDataset.size();
     }
+
+    /*public void loadImage( String url,ImageView imageView, Context context) {
+        Ion.with(context).load(url).intoImageView(imageView);
+    }
+
+    private void loadUserIcon(String url,CircularImage imageView, Context context) {
+        try{
+            Ion.with(context).load(url).intoImageView(imageView);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+    }*/
 
 
 }
