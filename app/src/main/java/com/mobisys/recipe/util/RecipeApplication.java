@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.mobisys.recipe.model.Message;
+import com.mobisys.recipe.model.TimeLine;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -23,7 +24,7 @@ public class RecipeApplication extends Application {
 
         Parse.enableLocalDatastore(getApplicationContext());
         ParseObject.registerSubclass(Message.class);
-       // ParseObject.registerSubclass(TimeLine.class);
+        ParseObject.registerSubclass(TimeLine.class);
         Parse.initialize(this);
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();

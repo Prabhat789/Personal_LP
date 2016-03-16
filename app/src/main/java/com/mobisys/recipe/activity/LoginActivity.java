@@ -84,7 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 List<String> list = new ArrayList<String>();
                 mProgressDialog.dismiss();
                 if (user != null) {
-                    Intent intent = new Intent(LoginActivity.this, OneToOneChatActivity.class);
+                    //Intent intent = new Intent(LoginActivity.this, OneToOneChatActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
