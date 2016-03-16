@@ -155,20 +155,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
             @Override
             public void run() {
                 if (image != null) {
-                    System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCC  " + image.getFilePathOriginal());
                     imagePath = image.getFilePathOriginal();
-                    //textViewFile.setText(image.getFilePathOriginal());
                     try {
-                        /*if (dialog.isShowing()) {
-                            imageLayout.setVisibility(View.VISIBLE);
-                            postImage.setImageURI(Uri.parse(new File(image
-                                    .getFileThumbnail()).toString()));
-                            filePath = image.getFilePathOriginal();
-                        }*/
                         filePath = image.getFilePathOriginal();
-                        /*Intent i = new Intent(getActivity(), ImageUploadActivity.class);
-                        i.putExtra("ImagePath", filePath);
-                        startActivity(i);*/
                         setupPost(filePath);
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -244,7 +233,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     }
 
     void setupPost(String filePath){
-        mProgressDialog= ProgressDialog.show(getActivity(), "", "Uploading Image ...", true);
+        mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
         File imgFile = new  File(filePath);
         imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
