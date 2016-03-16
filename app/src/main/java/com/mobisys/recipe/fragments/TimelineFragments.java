@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,23 @@ import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.kbeanie.imagechooser.exceptions.ChooserException;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.adapter.TimeLineAdapter;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.SpacesItemDecoration;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ubuntu1 on 11/3/16.
@@ -55,6 +62,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     private Bitmap imageBitmap = null;
     private byte[] ImageArray = null;
     private ProgressDialog mProgressDialog;
+    private ArrayList<TimeLine> allPosts;
+    private TimeLineAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +75,10 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(8));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        allPosts = new ArrayList<TimeLine>();
+        refreshAllPost();
+        mAdapter = new TimeLineAdapter(getActivity(), allPosts);
+        mRecyclerView.setAdapter(mAdapter);
         fabAdd = (FloatingActionButton)rootView.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
 
@@ -254,9 +266,36 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    mProgressDialog.dismiss();
                     //receiveMessage();
+                    receiveAllPost();
                 }
             }
         });
     }
+
+    void receiveAllPost(){
+        ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
+        query.setLimit(50);
+        query.findInBackground(new FindCallback<TimeLine>() {
+            public void done(List<TimeLine> messages, ParseException e) {
+                if (e == null) {
+
+                    allPosts.clear();
+                    Collections.reverse(messages);
+                    allPosts.addAll(messages);
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.invalidate();
+                   // mRecyclerView.scrollToPosition(allPosts.size()-1);
+                } else {
+                    Log.d("message", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void refreshAllPost() {
+        receiveAllPost();
+    }
+
 }
