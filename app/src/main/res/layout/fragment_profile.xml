@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="Offline  "
                     android:button="@null"
-                    android:drawableRight="@drawable/checkbox_selector"
+                    android:drawableRight="@drawable/checkbox_available_status"
                     android:id="@+id/checkBox3"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
@@ -218,6 +218,20 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
+        <com.mobisys.recipe.widgets.CustomButton
+            android:layout_width="239dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Messages"
+            android:id="@+id/btnMessage"
+            android:textAllCaps="false"
+            android:elevation="5dp"
+            android:textSize="@dimen/medium_text"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rounded_corner_parse_green"/>
     </LinearLayout>
 
     </ScrollView>

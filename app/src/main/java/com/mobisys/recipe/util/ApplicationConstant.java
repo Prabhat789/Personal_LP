@@ -12,5 +12,9 @@ public class ApplicationConstant {
     public static final String SAVE_LOGIN = "saveLogin";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String FRIEND_LIST_ADAPTER = "friend_list_adapter";
+    public static final String FLAG = "data_flag";
+    public static final String FLAG1 = "data_flag1";
+
 
 }

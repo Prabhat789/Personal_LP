@@ -27,8 +27,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private static final String TAG = HomeScreenActivity.class.getSimpleName();
 
-    private TabLayout tabLayout;
     private ViewPager viewPager;
+    public TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

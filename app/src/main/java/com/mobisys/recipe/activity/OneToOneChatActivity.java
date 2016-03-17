@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.adapter.OneToOneChatListAdapter;
 import com.mobisys.recipe.model.Message;
+import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.SpacesItemDecoration;
 import com.mobisys.recipe.util.Utils;
 import com.parse.FindCallback;
@@ -57,8 +58,8 @@ public class OneToOneChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_to_one_chat);
-        friendObjectId = "bVTE7nVohL";
-        userNmae = "Prabhat";
+        friendObjectId = getIntent().getStringExtra(ApplicationConstant.FLAG);
+        userNmae = getIntent().getStringExtra(ApplicationConstant.FLAG1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.txtToolbar);
@@ -238,7 +239,6 @@ public class OneToOneChatActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<Message>() {
             public void done(List<Message> messages, ParseException e) {
                 if (e == null) {
-
                     mMessages.clear();
                     Collections.reverse(messages);
                     mMessages.addAll(messages);

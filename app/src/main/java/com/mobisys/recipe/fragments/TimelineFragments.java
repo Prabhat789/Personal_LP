@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,7 +48,7 @@ import java.util.List;
 /**
  * Created by ubuntu1 on 11/3/16.
  */
-public class TimelineFragments extends Fragment implements View.OnClickListener ,ImageChooserListener {
+public class TimelineFragments extends Fragment implements View.OnClickListener ,ImageChooserListener, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = TimelineFragments.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,6 +65,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     private ProgressDialog mProgressDialog;
     private ArrayList<TimeLine> allPosts;
     private TimeLineAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,12 +77,22 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(8));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red,R.color.parse_green,R.color.parse_color);
         allPosts = new ArrayList<TimeLine>();
         refreshAllPost();
         mAdapter = new TimeLineAdapter(getActivity(), allPosts);
         mRecyclerView.setAdapter(mAdapter);
         fabAdd = (FloatingActionButton)rootView.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
+
+        /*mRecyclerView.setOnScrollListener(new ScrollListener(getActivity()) {
+            @Override
+            public void onMoved(int distance) {
+                HomeScreenActivity.tabLayout.setTranslationY(-distance);
+            }
+        });*/
 
         return rootView;
 
@@ -282,6 +294,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
                 }
             }
         });
+
+
+
     }
 
     private void refreshAllPost() {
@@ -292,4 +307,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         return ParseUser.getCurrentUser().getString("profileImage");
     }
 
+    @Override
+    public void onRefresh() {
+        refreshAllPost();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }

@@ -80,7 +80,7 @@
             android:name=".activity.OneToOneChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
