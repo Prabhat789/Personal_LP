@@ -237,11 +237,11 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         File imgFile = new  File(filePath);
         imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
         ImageArray = stream.toByteArray();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                 .format(new Date());
-        ParseFile file = new ParseFile("android" + timeStamp + ".png", ImageArray);
+        ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
         file.saveInBackground();
         TimeLine timeLine = new TimeLine();
         timeLine.setPostImage(file);

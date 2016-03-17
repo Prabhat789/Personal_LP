@@ -69,11 +69,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.txtUsername.setText(mDataset.get(position).getUserName());
         imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
                 holder.imagePost,
-                R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+                R.drawable.ic_loading, R.drawable.ic_error));
         holder.imagePost.setImageUrl(mDataset.get(position).getPostImage().getUrl(), imageLoader);
         imageLoader.get(mDataset.get(position).getUserIcon(), ImageLoader.getImageListener(
                 holder.userIcon,
-                R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+                R.drawable.ic_loading, R.drawable.ic_error));
         holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
 
         /*loadImage(mDataset.get(position).getPostImage().getUrl(),holder.imagePost,mContext);
