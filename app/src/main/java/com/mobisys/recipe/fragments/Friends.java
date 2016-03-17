@@ -13,11 +13,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.activity.OneToOneChatActivity;
+import com.mobisys.recipe.activity.SearchActivity;
 import com.mobisys.recipe.adapter.FriendListAdapter;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.SpacesItemDecoration;
@@ -113,9 +117,33 @@ public class Friends extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
     @Override
     public void onRefresh() {
-
         onResume();
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_friends_fragment, menu);
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_search){
+            Intent i = new Intent(getActivity(), SearchActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
