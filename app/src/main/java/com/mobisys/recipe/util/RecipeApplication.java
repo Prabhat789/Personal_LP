@@ -1,6 +1,7 @@
 package com.mobisys.recipe.util;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.mobisys.recipe.model.Friends;
@@ -19,15 +20,24 @@ import com.parse.SaveCallback;
  */
 public class RecipeApplication extends Application {
 
+    private static RecipeApplication mInstance;
+    private static Context mAppContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Parse.enableLocalDatastore(getApplicationContext());
+        mInstance = this;
+        this.setAppContext(getApplicationContext());
+
+        Parse.enableLocalDatastore(getAppContext());
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(TimeLine.class);
         ParseObject.registerSubclass(Friends.class);
-        Parse.initialize(this);
+        ParseObject.registerSubclass(ParseUser.class);
+
+
+        Parse.initialize(getAppContext());
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);
@@ -48,5 +58,15 @@ public class RecipeApplication extends Application {
             }
         });
 
+    }
+
+    public static RecipeApplication getInstance(){
+        return mInstance;
+    }
+    public static Context getAppContext() {
+        return mAppContext;
+    }
+    public void setAppContext(Context mAppContext) {
+        this.mAppContext = mAppContext;
     }
 }

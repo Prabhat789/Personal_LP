@@ -1,6 +1,5 @@
 package com.mobisys.recipe.fragments;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +39,6 @@ public class Friends extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     private static final String TAG = Friends.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressDialog mProgressDialog;
     private ArrayList<com.mobisys.recipe.model.Friends> allFriends;
     private FriendListAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;

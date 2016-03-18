@@ -2,29 +2,37 @@ package com.mobisys.recipe.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.adapter.UsersListAdapter;
+import com.mobisys.recipe.util.SpacesItemDecoration;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Prabhat on 09/01/16.
  */
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
-    private static final String TAG = "SearchActivity";
-    private ListView listSearch;
+    private static final String TAG = SearchActivity.class.getSimpleName();
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
     private EditText editSearch;
-    private Button btnClearHistory;
-    private LinearLayout layoutList, layoutRecyclerList;
-    private ListView listV;
+
+    private ArrayList<ParseUser> allUsers;
+    private UsersListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,24 +43,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         editSearch = (EditText)findViewById(R.id.searchEditText);
-        listSearch = (ListView)findViewById(R.id.listHistory);
-        btnClearHistory = (Button)findViewById(R.id.btnClearHistory);
-        btnClearHistory.setOnClickListener(this);
-
-        layoutList = (LinearLayout)findViewById(R.id.layoutList);
-        layoutRecyclerList = (LinearLayout)findViewById(R.id.layoutRecyclerList);
-        layoutRecyclerList.setVisibility(View.GONE);
-        listV = (ListView)findViewById(R.id.cardList);
-        /*mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.listUsers);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(8));
         mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);*/
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //loadData();
+        allUsers = new ArrayList<ParseUser>();
 
 
-        editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+       /* editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -63,22 +63,28 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return false;
             }
 
-        });
+        });*/
 
 
-
+        receiveAllUsers("");
+        mAdapter = new UsersListAdapter(SearchActivity.this, allUsers);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
-    private void performSearch(String cs) {
+
+
+    /*private void performSearch(String cs) {
         if (!cs.isEmpty() && cs.length() >0){
-            /*db.addHistory(new HistoryModel(cs));
+            *//*db.addHistory(new HistoryModel(cs));
             if (Utils.isConnected(SearchActivity.this)){
                 loadSearchList(SearchActivity.this,"search.php",cs);
-            }*/
-
+            }*//*
+            receiveAllUsers(cs);
+            mAdapter = new UsersListAdapter(SearchActivity.this, allUsers);
+            mRecyclerView.setAdapter(mAdapter);
         }
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -98,14 +104,27 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v == btnClearHistory){
-            try{
 
-            }catch (Exception e){
-                e.printStackTrace();
+    }
+
+    void receiveAllUsers(String q){
+        //ParseQuery<ParseUser> query = ParseUser.getQuery(ParseUser.class);
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+       // query.whereMatches("username",q);
+        query.setLimit(70);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> messages, ParseException e) {
+                if (e == null) {
+                    allUsers.clear();
+                    Collections.reverse(messages);
+                    allUsers.addAll(messages);
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.invalidate();
+                } else {
+                    Log.d("message", "Error: " + e.getMessage());
+                }
             }
-
-        }
+        });
     }
 
 

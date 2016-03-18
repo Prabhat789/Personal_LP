@@ -96,6 +96,10 @@ public class OneToOneChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        /*Intent i = new Intent(OneToOneChatActivity.this, HomeScreenActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);*/
         super.onBackPressed();
         finish();
     }

@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,7 +102,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if (v == fabAdd){
-            imagePickerDialog(getActivity());
+           // imagePickerDialog(getActivity());
+            showDialog();
         }else if (v == imageCamera){
             dialog.dismiss();
                 try {
@@ -311,5 +313,27 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     public void onRefresh() {
         refreshAllPost();
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    void showDialog() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        android.support.v4.app.DialogFragment newFragment = PostDialogFragment.newInstance();
+        newFragment.show(ft,"");
+    }
+
+    public static class PostDialogFragment extends android.support.v4.app.DialogFragment {
+
+        static PostDialogFragment newInstance() {
+            PostDialogFragment f = new PostDialogFragment();
+            return f;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_friends, container, false);
+            return v;
+        }
+
     }
 }

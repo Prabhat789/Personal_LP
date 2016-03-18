@@ -1,13 +1,13 @@
 package com.mobisys.recipe.model;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by ubuntu1 on 18/3/16.
  */
 @ParseClassName("User")
-public class User extends ParseObject {
+public class User extends ParseUser {
 
     public String getUserName() {
         return getString("username");
