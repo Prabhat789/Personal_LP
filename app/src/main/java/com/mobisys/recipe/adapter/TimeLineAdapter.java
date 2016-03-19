@@ -1,7 +1,11 @@
 package com.mobisys.recipe.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.model.TimeLine;
+import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
 import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 
@@ -33,6 +38,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         NetworkImageView imagePost;
         CircularImage userIcon;
         Button btnComments;
+        CardView card_view;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -41,6 +47,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             userIcon = (CircularImage)itemView.findViewById(R.id.imgUser);
             txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
             btnComments = (Button)itemView.findViewById(R.id.btnComments);
+            card_view = (CardView)itemView.findViewById(R.id.card_view);
 
         }
 
@@ -63,7 +70,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(DataObjectHolder holder, final int position) {
 
         holder.txtBody.setText(mDataset.get(position).getBodyText());
         holder.txtUsername.setText(mDataset.get(position).getUserName());
@@ -84,6 +91,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage(mDataset.get(position).getPostImage().getUrl());
             }
         });
 
@@ -111,6 +125,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         }
 
     }*/
+
+    private void sendMessage( String url) {
+        Log.d(TAG, "Broadcasting message");
+        Intent intent = new Intent(ApplicationConstant.TIMELINE_ADAPTER);
+        intent.putExtra(ApplicationConstant.IMAGE_URL, url);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+    }
 
 
 }

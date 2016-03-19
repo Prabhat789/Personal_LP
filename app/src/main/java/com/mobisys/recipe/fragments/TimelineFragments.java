@@ -2,26 +2,36 @@ package com.mobisys.recipe.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
@@ -30,6 +40,8 @@ import com.kbeanie.imagechooser.exceptions.ChooserException;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.adapter.TimeLineAdapter;
 import com.mobisys.recipe.model.TimeLine;
+import com.mobisys.recipe.util.ApplicationConstant;
+import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 import com.mobisys.recipe.util.SpacesItemDecoration;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -72,6 +84,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
+
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listHighway);
         mRecyclerView.setHasFixedSize(true);
@@ -317,8 +330,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
 
     void showDialog() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        android.support.v4.app.DialogFragment newFragment = PostDialogFragment.newInstance();
-        newFragment.show(ft,"");
+        DialogFragment newFragment = PostDialogFragment.newInstance();
+        newFragment.show(ft, "");
     }
 
     public static class PostDialogFragment extends android.support.v4.app.DialogFragment {
@@ -331,9 +344,98 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_friends, container, false);
+            View v = inflater.inflate(R.layout.fragment_profile, container, false);
             return v;
         }
 
     }
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
+
+            Log.d(TAG, "Got message: " + url);
+            showDetailPostDialog(url);
+
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+       // dismissDetailDialog();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter(ApplicationConstant.TIMELINE_ADAPTER));
+
+        super.onResume();
+    }
+
+    public static class DetailPostDialog extends DialogFragment {
+
+        //private Context context;
+        static DetailPostDialog newInstance() {
+            DetailPostDialog f = new DetailPostDialog();
+            f.setStyle( DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
+            return f;
+        }
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
+            Bundle bundle = this.getArguments();
+            String url = bundle.getString(ApplicationConstant.IMAGE_URL);
+            ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
+            NetworkImageView imageView = (NetworkImageView)v.findViewById(R.id.imgPostDialog);
+            imageLoader.get(url, ImageLoader.getImageListener(
+                    imageView,
+                    R.drawable.ic_loading, R.drawable.ic_error));
+
+            imageView.setImageUrl(url, imageLoader);
+
+            return v;
+        }
+
+        @Override
+        public void onStart() {
+            Display display =((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int DisplayWidth ;
+            DisplayWidth = display.getWidth();
+            Window window = getDialog().getWindow();
+            window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
+            //getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            super.onStart();
+        }
+    }
+
+    void showDetailPostDialog( String url) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment newFragment = DetailPostDialog.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstant.IMAGE_URL, url);
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "detailDialog");
+    }
+
+    /*public void dismissDetailDialog() {
+        DialogFragment someDialog = (DialogFragment) getFragmentManager().findFragmentByTag("detailDialog");
+        someDialog.dismiss();
+    }*/
 }
