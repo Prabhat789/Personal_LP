@@ -1,3 +1,4 @@
+/*
 package com.mobisys.recipe.util;
 
 import android.content.Context;
@@ -14,9 +15,11 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 
 
+*/
 /**
  * Created by ubuntu1 on 18/12/15.
- */
+ *//*
+
 
 public class CustomVolleyRequestQueue {
     private static CustomVolleyRequestQueue mInstance;
@@ -71,3 +74,4 @@ private ImageLoader mImageLoader;
         }
 
 }
+*/

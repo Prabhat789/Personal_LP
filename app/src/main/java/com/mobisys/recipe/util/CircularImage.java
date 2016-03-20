@@ -1,6 +1,5 @@
 package com.mobisys.recipe.util;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.mobisys.recipe.R;
 
 import android.content.Context;
@@ -21,7 +20,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-public class CircularImage extends NetworkImageView
+public class CircularImage extends ImageView
 {
 	// Border & Selector configuration variables
 	private boolean hasBorder;

@@ -48,7 +48,6 @@
                     android:maxLines="2"
                     android:textSize="16dp"
                     android:layout_marginTop="5dp"
-                    android:text="Prabhat tiwari is a very good boy , and he is an engineer in pune, working in software company."
                     android:textColor="@color/smoke_white"
                     android:id="@+id/txtTimeline"/>
             </LinearLayout>
@@ -57,7 +56,7 @@
         </LinearLayout>
 
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"

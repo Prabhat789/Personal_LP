@@ -10,15 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
-import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 
 import java.util.List;
 
@@ -30,12 +29,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     private static final String TAG = TimeLineAdapter.class.getSimpleName();
     private List<TimeLine> mDataset;
     private Context mContext;
-    private ImageLoader imageLoader;
+    //private ImageLoader imageLoader;
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
         TextView txtBody, txtUsername;
-        NetworkImageView imagePost;
+        ImageView imagePost;
         CircularImage userIcon;
         Button btnComments;
         CardView card_view;
@@ -43,7 +42,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         public DataObjectHolder(View itemView) {
             super(itemView);
             txtBody = (TextView) itemView.findViewById(R.id.txtTimeline);
-            imagePost = (NetworkImageView)itemView.findViewById(R.id.imgPost);
+            imagePost = (ImageView)itemView.findViewById(R.id.imgPost);
             userIcon = (CircularImage)itemView.findViewById(R.id.imgUser);
             txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
             btnComments = (Button)itemView.findViewById(R.id.btnComments);
@@ -55,7 +54,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public TimeLineAdapter(Context context, List<TimeLine> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
+       // imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
 
 
@@ -86,19 +85,30 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             holder.imagePost.setVisibility(View.GONE);
         }else {
             holder.imagePost.setVisibility(View.VISIBLE);
-            imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
+            loadImage(url,holder.imagePost,mContext);
+            /*Picasso.with(mContext)
+                    .load(url)
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_error)
+                    .into(holder.imagePost);*/
+            /*imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
                     holder.imagePost,
                     R.drawable.ic_loading, R.drawable.ic_error));
-            holder.imagePost.setImageUrl(mDataset.get(position).getPostImage().getUrl(), imageLoader);
+            holder.imagePost.setImageUrl(mDataset.get(position).getPostImage().getUrl(), imageLoader);*/
         }
 
-        imageLoader.get(mDataset.get(position).getUserIcon(), ImageLoader.getImageListener(
+        /*imageLoader.get(mDataset.get(position).getUserIcon(), ImageLoader.getImageListener(
                 holder.userIcon,
                 R.drawable.ic_loading, R.drawable.ic_error));
-        holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
+        holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);*/
+        /*Picasso.with(mContext)
+                .load(mDataset.get(position).getUserIcon())
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(holder.userIcon);*/
 
-        /*loadImage(mDataset.get(position).getPostImage().getUrl(),holder.imagePost,mContext);
-        loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);*/
+
+        loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
 
 
         holder.btnComments.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +137,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         return mDataset.size();
     }
 
-    /*public void loadImage( String url,ImageView imageView, Context context) {
+    public void loadImage( String url,ImageView imageView, Context context) {
         Ion.with(context).load(url).intoImageView(imageView);
     }
 
@@ -138,7 +148,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             e.printStackTrace();
         }
 
-    }*/
+    }
 
     private void sendMessage( String url) {
         Log.d(TAG, "Broadcasting message");

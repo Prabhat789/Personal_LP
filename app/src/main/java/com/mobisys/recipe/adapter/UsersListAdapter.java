@@ -11,11 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
+import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
-import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     private static final String TAG = UsersListAdapter.class.getSimpleName();
     private List<ParseUser> mDataset;
     private Context mContext;
-    private ImageLoader imageLoader;
+    //private ImageLoader imageLoader;
 
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -50,7 +49,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     public UsersListAdapter(Context context, List<ParseUser> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
+        //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }
 
@@ -67,7 +66,9 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     public void onBindViewHolder(DataObjectHolder holder, final int position) {
 
         holder.txtUserName.setText(mDataset.get(position).getUsername());
-        holder.userIcon.setImageUrl(mDataset.get(position).getString("profileImage"), imageLoader);
+        //holder.userIcon.setImageUrl(mDataset.get(position).getString("profileImage"), imageLoader);
+        //Picasso.with(mContext).load(mDataset.get(position).getString("profileImage")).into(holder.userIcon);
+        loadUserIcon(mDataset.get(position).getString("profileImage"),holder.userIcon,mContext);
         /*holder.txtLocation.setText(Utils.getAddress(mDataset.get(position).get("latitude").toString(),
                 mDataset.get(position).get("longitude").toString(),mContext));*/
         holder.txtLocation.setText(mContext.getString(R.string.location_not_available));
@@ -78,6 +79,14 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
             }
         });
 
+
+    }
+    private void loadUserIcon(String url,CircularImage imageView, Context context) {
+        try{
+            Ion.with(context).load(url).intoImageView(imageView);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
 
     }
 

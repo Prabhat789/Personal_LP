@@ -33,19 +33,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.kbeanie.imagechooser.exceptions.ChooserException;
+import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.adapter.TimeLineAdapter;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
-import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 import com.mobisys.recipe.util.SpacesItemDecoration;
 import com.mobisys.recipe.util.Utils;
 import com.parse.FindCallback;
@@ -277,14 +275,24 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             btnCancel = (Button)v.findViewById(R.id.btnCancelDialog);
             dialogImageContainer = (ImageView)v.findViewById(R.id.dialogImageContainer);
             editStatusDialog = (EditText)v.findViewById(R.id.editStatus);
-            ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
-            profileImage.setImageUrl(ParseUser.getCurrentUser().getString("profileImage"), imageLoader);
+            //ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
+            //profileImage.setImageUrl(ParseUser.getCurrentUser().getString("profileImage"), imageLoader);
+            //Picasso.with(getActivity()).load(ParseUser.getCurrentUser().getString("profileImage")).into(profileImage);
+            loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),profileImage,getActivity());
             imageCamera.setOnClickListener(this);
             imageGallery.setOnClickListener(this);
             btnSave.setOnClickListener(this);
             btnCancel.setOnClickListener(this);
 
             return v;
+        }
+        private void loadUserIcon(String url,CircularImage imageView, Context context) {
+            try{
+                Ion.with(context).load(url).intoImageView(imageView);
+            }catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
+
         }
 
         @Override
@@ -536,17 +544,22 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
             Bundle bundle = this.getArguments();
             String url = bundle.getString(ApplicationConstant.IMAGE_URL);
-            ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
-            NetworkImageView imageView = (NetworkImageView)v.findViewById(R.id.imgPostDialog);
-            imageLoader.get(url, ImageLoader.getImageListener(
+            //ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
+            ImageView imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
+            /*imageLoader.get(url, ImageLoader.getImageListener(
                     imageView,
-                    R.drawable.ic_loading, R.drawable.ic_error));
+                    R.drawable.ic_loading, R.drawable.ic_error));*/
 
-            imageView.setImageUrl(url, imageLoader);
+            //Picasso.with(getActivity()).load(url).into(imageView);
+            loadImage(url,imageView,getActivity());
+            //imageView.setImageUrl(url, imageLoader);
 
 
 
             return v;
+        }
+        public void loadImage( String url,ImageView imageView, Context context) {
+            Ion.with(context).load(url).intoImageView(imageView);
         }
 
         @Override

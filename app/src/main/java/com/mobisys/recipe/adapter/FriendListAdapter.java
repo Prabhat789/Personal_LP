@@ -11,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
+import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.model.Friends;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
-import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     private static final String TAG = TimeLineAdapter.class.getSimpleName();
     private List<Friends> mDataset;
     private Context mContext;
-    private ImageLoader imageLoader;
+    //private ImageLoader imageLoader;
 
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -50,7 +49,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     public FriendListAdapter(Context context, List<Friends> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
+        //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }
 
@@ -71,7 +70,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
         /*imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
                 holder.imagePost,
                 R.drawable.ic_loading, R.drawable.ic_error));*/
-        holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
+        //holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
+        //Picasso.with(mContext).load(mDataset.get(position).getUserIcon()).into(holder.userIcon);
+
+        loadUserIcon(mDataset.get(position).getUserIcon(),holder.userIcon,mContext);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +82,14 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
             }
         });
 
+
+    }
+    private void loadUserIcon(String url,CircularImage imageView, Context context) {
+        try{
+            Ion.with(context).load(url).intoImageView(imageView);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
 
     }
 
