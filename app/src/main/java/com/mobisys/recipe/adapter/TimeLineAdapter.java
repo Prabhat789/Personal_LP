@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
@@ -29,7 +29,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     private static final String TAG = TimeLineAdapter.class.getSimpleName();
     private List<TimeLine> mDataset;
     private Context mContext;
-    //private ImageLoader imageLoader;
+    private ImageLoader imageLoader;
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
@@ -54,7 +54,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public TimeLineAdapter(Context context, List<TimeLine> myDataset) {
         mDataset = myDataset;
         mContext = context;
-       // imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
+        imageLoader = new ImageLoader(mContext);
 
 
 
@@ -86,27 +86,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         }else {
             holder.imagePost.setVisibility(View.VISIBLE);
             loadImage(url,holder.imagePost,mContext);
-            /*Picasso.with(mContext)
-                    .load(url)
-                    .placeholder(R.drawable.ic_loading)
-                    .error(R.drawable.ic_error)
-                    .into(holder.imagePost);*/
-            /*imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
-                    holder.imagePost,
-                    R.drawable.ic_loading, R.drawable.ic_error));
-            holder.imagePost.setImageUrl(mDataset.get(position).getPostImage().getUrl(), imageLoader);*/
+
         }
-
-        /*imageLoader.get(mDataset.get(position).getUserIcon(), ImageLoader.getImageListener(
-                holder.userIcon,
-                R.drawable.ic_loading, R.drawable.ic_error));
-        holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);*/
-        /*Picasso.with(mContext)
-                .load(mDataset.get(position).getUserIcon())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.ic_error)
-                .into(holder.userIcon);*/
-
 
         loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
 
@@ -138,12 +119,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     }
 
     public void loadImage( String url,ImageView imageView, Context context) {
-        Ion.with(context).load(url).intoImageView(imageView);
+        imageLoader.DisplayImage(url,imageView);
     }
 
     private void loadUserIcon(String url,CircularImage imageView, Context context) {
         try{
-            Ion.with(context).load(url).intoImageView(imageView);
+            imageLoader.DisplayImage(url,imageView);
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }

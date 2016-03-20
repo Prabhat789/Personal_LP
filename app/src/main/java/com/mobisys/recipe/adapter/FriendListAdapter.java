@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.model.Friends;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
@@ -27,7 +27,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     private static final String TAG = TimeLineAdapter.class.getSimpleName();
     private List<Friends> mDataset;
     private Context mContext;
-    //private ImageLoader imageLoader;
+    private ImageLoader imageLoader;
 
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -49,6 +49,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     public FriendListAdapter(Context context, List<Friends> myDataset) {
         mDataset = myDataset;
         mContext = context;
+        imageLoader = new ImageLoader(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }
@@ -67,11 +68,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
 
         holder.txtUserName.setText(mDataset.get(position).getUserName());
         holder.txtMessageBody.setText(mDataset.get(position).getBodyText());
-        /*imageLoader.get(mDataset.get(position).getPostImage().getUrl(), ImageLoader.getImageListener(
-                holder.imagePost,
-                R.drawable.ic_loading, R.drawable.ic_error));*/
-        //holder.userIcon.setImageUrl(mDataset.get(position).getUserIcon(), imageLoader);
-        //Picasso.with(mContext).load(mDataset.get(position).getUserIcon()).into(holder.userIcon);
 
         loadUserIcon(mDataset.get(position).getUserIcon(),holder.userIcon,mContext);
 
@@ -86,7 +82,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     }
     private void loadUserIcon(String url,CircularImage imageView, Context context) {
         try{
-            Ion.with(context).load(url).intoImageView(imageView);
+            //Ion.with(context).load(url).intoImageView(imageView);
+            imageLoader.DisplayImage(url,imageView);
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }

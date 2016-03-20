@@ -31,7 +31,7 @@ dependencies {
     compile 'com.parse:parse-android:1.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.kbeanie:image-chooser-library:1.5.2@aar'
-    compile 'com.koushikdutta.ion:ion:2.+'
+    /*compile 'com.koushikdutta.ion:ion:2.+'*/
 
 
 }

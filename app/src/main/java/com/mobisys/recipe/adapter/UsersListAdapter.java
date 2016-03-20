@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
 import com.parse.ParseUser;
@@ -27,7 +27,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     private static final String TAG = UsersListAdapter.class.getSimpleName();
     private List<ParseUser> mDataset;
     private Context mContext;
-    //private ImageLoader imageLoader;
+    private ImageLoader imageLoader;
 
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -49,6 +49,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     public UsersListAdapter(Context context, List<ParseUser> myDataset) {
         mDataset = myDataset;
         mContext = context;
+        imageLoader = new ImageLoader(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }
@@ -83,7 +84,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     }
     private void loadUserIcon(String url,CircularImage imageView, Context context) {
         try{
-            Ion.with(context).load(url).intoImageView(imageView);
+            //Ion.with(context).load(url).intoImageView(imageView);
+            imageLoader.DisplayImage(url,imageView);
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }

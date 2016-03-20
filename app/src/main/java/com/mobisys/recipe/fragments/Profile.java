@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.activity.MapsActivity;
 import com.mobisys.recipe.activity.OneToOneChatActivity;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.parse.ParseUser;
 
 /**
@@ -25,7 +25,7 @@ public class Profile extends Fragment implements View.OnClickListener {
 
     private static final String TAG = Profile.class.getSimpleName();
     private ImageView userProfileImage;
-    //private ImageLoader imageLoader;
+    private ImageLoader imageLoader;
     private LinearLayout llLivesIn, llFrom;
     private TextView txtLivesIn, txtFrom;
     private Button btnMessage;
@@ -41,12 +41,7 @@ public class Profile extends Fragment implements View.OnClickListener {
         txtFrom = (TextView)rootView.findViewById(R.id.txtFrom);
         txtLivesIn = (TextView)rootView.findViewById(R.id.txtLivesin);
         btnMessage = (Button)rootView.findViewById(R.id.btnMessage);
-        //imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
-        /*imageLoader.get(ParseUser.getCurrentUser().getString("profileImage"), ImageLoader.getImageListener(
-                userProfileImage,
-                R.mipmap.ic_launcher, R.mipmap.ic_launcher));*/
-       // userProfileImage.setImageUrl(ParseUser.getCurrentUser().getString("profileImage"), imageLoader);
-        //Picasso.with(getActivity()).load(ParseUser.getCurrentUser().getString("profileImage")).into(userProfileImage);
+        imageLoader = new ImageLoader(getActivity());
 
         loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),userProfileImage,getActivity());
 
@@ -60,7 +55,8 @@ public class Profile extends Fragment implements View.OnClickListener {
 
     private void loadUserIcon(String url,ImageView imageView, Context context) {
         try{
-            Ion.with(context).load(url).intoImageView(imageView);
+            //Ion.with(context).load(url).intoImageView(imageView);
+            imageLoader.DisplayImage(url,imageView);
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }

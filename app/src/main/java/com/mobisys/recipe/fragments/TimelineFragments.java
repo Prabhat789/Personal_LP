@@ -1,5 +1,6 @@
 package com.mobisys.recipe.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -38,9 +39,9 @@ import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.kbeanie.imagechooser.exceptions.ChooserException;
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.adapter.TimeLineAdapter;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
@@ -96,7 +97,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red,R.color.parse_green,R.color.parse_color);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.parse_green, R.color.parse_color);
         allPosts = new ArrayList<TimeLine>();
         refreshAllPost();
         mAdapter = new TimeLineAdapter(getActivity(), allPosts);
@@ -118,45 +119,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == fabAdd){
-           // imagePickerDialog(getActivity());
             showDialog();
-        }/*else if (v == imageCamera){
-            dialog.dismiss();
-                try {
-                    takePicture();
-                } catch (ChooserException e) {
-                    e.printStackTrace();
-                }
-
-        }else if (v == imageGallery){
-            dialog.dismiss();
-                try {
-                    chooseImage();
-                } catch (ChooserException e) {
-                    e.printStackTrace();
-                }
-
-        }*/
+        }
     }
-
-
-
-    /*void imagePickerDialog(Context mContext) {
-
-        dialog = new Dialog(mContext);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_image_picker);
-        dialog.setCancelable(true);
-        imageCamera = (ImageView) dialog.findViewById(R.id.imageCamera);
-        imageGallery = (ImageView) dialog.findViewById(R.id.imageGallery);
-        imageCamera.setOnClickListener(this);
-        imageGallery.setOnClickListener(this);
-
-        dialog.show();
-    }
-*/
 
 
     void receiveAllPost(){
@@ -286,9 +251,11 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             return v;
         }
-        private void loadUserIcon(String url,CircularImage imageView, Context context) {
+        private void loadUserIcon(String url,CircularImage imageView, Activity context) {
             try{
-                Ion.with(context).load(url).intoImageView(imageView);
+                ImageLoader imageLoader = new ImageLoader(context);
+                //Ion.with(context).load(url).intoImageView(imageView);
+                imageLoader.DisplayImage(url,imageView);
             }catch (IllegalArgumentException e){
                 e.printStackTrace();
             }
@@ -544,22 +511,16 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
             Bundle bundle = this.getArguments();
             String url = bundle.getString(ApplicationConstant.IMAGE_URL);
-            //ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
             ImageView imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
-            /*imageLoader.get(url, ImageLoader.getImageListener(
-                    imageView,
-                    R.drawable.ic_loading, R.drawable.ic_error));*/
-
-            //Picasso.with(getActivity()).load(url).into(imageView);
             loadImage(url,imageView,getActivity());
-            //imageView.setImageUrl(url, imageLoader);
 
 
 
             return v;
         }
-        public void loadImage( String url,ImageView imageView, Context context) {
-            Ion.with(context).load(url).intoImageView(imageView);
+        public void loadImage( String url,ImageView imageView, Activity context) {
+            ImageLoader loader = new ImageLoader(context);
+            loader.DisplayImage(url, imageView);
         }
 
         @Override
@@ -569,7 +530,6 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             DisplayWidth = display.getWidth();
             Window window = getDialog().getWindow();
             window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
-            //getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             super.onStart();
@@ -585,8 +545,5 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         newFragment.show(ft, "detailDialog");
     }
 
-    /*public void dismissDetailDialog() {
-        DialogFragment someDialog = (DialogFragment) getFragmentManager().findFragmentByTag("detailDialog");
-        someDialog.dismiss();
-    }*/
+
 }

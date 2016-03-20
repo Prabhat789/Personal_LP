@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.model.Message;
 import com.mobisys.recipe.util.CircularImage;
 
@@ -27,7 +27,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
     private static final String TAG = OneToOneChatListAdapter.class.getSimpleName();
     private List<Message> mDataset;
     private Context mContext;
-    //private ImageLoader imageLoader;
+    private ImageLoader imageLoader;
     private String mUserId;
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -52,6 +52,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
         mDataset = myDataset;
         mContext = context;
         mUserId = userId;
+        imageLoader = new ImageLoader(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
 
@@ -90,28 +91,9 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
         try {
             if (mDataset.get(position).getProfileImage().length() != 0) {
 
-                //
-               /*imageLoader.get( mDataset.get(position).getProfileImage(), ImageLoader.getImageListener(
-                        profileView,
-                        R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-                profileView.setImageUrl(mDataset.get(position).getProfileImage(), imageLoader);*/
-                /*Picasso.with(mContext)
-                        .load(mDataset.get(position).getProfileImage())
-                        .placeholder(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                        .into(profileView);*/
                 loadImage(mDataset.get(position).getProfileImage(), profileView, mContext);
             }else {
 
-                /*imageLoader.get(getProfileUrl( mDataset.get(position).getUserId()), ImageLoader.getImageListener(
-                        profileView,
-                        R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-                profileView.setImageUrl(mDataset.get(position).getProfileImage(), imageLoader);*/
-                /*Picasso.with(mContext)
-                        .load(mDataset.get(position).getProfileImage())
-                        .placeholder(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                        .into(profileView);*/
                 loadImage(getProfileUrl(mDataset.get(position).getUserId()), profileView,mContext);
             }
         } catch (Exception e) {
@@ -154,6 +136,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
     }
 
     public void loadImage( String url,CircularImage imageView, Context context) {
-        Ion.with(context).load(url).intoImageView(imageView);
+        //Ion.with(context).load(url).intoImageView(imageView);
+        imageLoader.DisplayImage(url,imageView);
     }
 }
