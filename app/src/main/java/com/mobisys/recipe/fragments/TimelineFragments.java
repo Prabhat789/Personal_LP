@@ -27,6 +27,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -41,8 +44,10 @@ import com.mobisys.recipe.R;
 import com.mobisys.recipe.adapter.TimeLineAdapter;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
+import com.mobisys.recipe.util.CircularImage;
 import com.mobisys.recipe.util.CustomVolleyRequestQueue;
 import com.mobisys.recipe.util.SpacesItemDecoration;
+import com.mobisys.recipe.util.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -61,20 +66,20 @@ import java.util.List;
 /**
  * Created by ubuntu1 on 11/3/16.
  */
-public class TimelineFragments extends Fragment implements View.OnClickListener ,ImageChooserListener, SwipeRefreshLayout.OnRefreshListener {
+public class TimelineFragments extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = TimelineFragments.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionButton fabAdd;
     private static final int RESULT_OK           = -1;
-    private ImageChooserManager imageChooserManager;
-    private String filePath="";
-    private int chooserType;
-    private String imagePath = "";
-    private Dialog dialog;
-    private ImageView imageCamera, imageGallery;
+    private static ImageChooserManager imageChooserManager;
+    private static String filePath="";
+    private static int chooserType;
     private Bitmap imageBitmap = null;
     private byte[] ImageArray = null;
+    private String imagePath = "";
+    private Dialog dialog;
+    //private ImageView imageCamera, imageGallery;
     private ProgressDialog mProgressDialog;
     private ArrayList<TimeLine> allPosts;
     private TimeLineAdapter mAdapter;
@@ -117,7 +122,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         if (v == fabAdd){
            // imagePickerDialog(getActivity());
             showDialog();
-        }else if (v == imageCamera){
+        }/*else if (v == imageCamera){
             dialog.dismiss();
                 try {
                     takePicture();
@@ -133,117 +138,12 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
                     e.printStackTrace();
                 }
 
-        }
+        }*/
     }
 
-    private void chooseImage() throws ChooserException {
-        chooserType = ChooserType.REQUEST_PICK_PICTURE;
-        imageChooserManager = new ImageChooserManager(this,
-                ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
-        imageChooserManager.setImageChooserListener(this);
-        try {
-            filePath = imageChooserManager.choose();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void takePicture() throws ChooserException {
-        chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
-        imageChooserManager = new ImageChooserManager(this,
-                ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
-        imageChooserManager.setImageChooserListener(this);
-        try {
-            filePath = imageChooserManager.choose();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void reinitializeImageChooser() {
-        imageChooserManager = new ImageChooserManager(this, chooserType,
-                "myfolder", true);
-        imageChooserManager.setImageChooserListener(this);
-        imageChooserManager.reinitialize(filePath);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("chooser_type", chooserType);
-        outState.putString("media_path", filePath);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onImageChosen(final ChosenImage image) {
-        // TODO Auto-generated method stub
-        getActivity().runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                if (image != null) {
-                    imagePath = image.getFilePathOriginal();
-                    try {
-                        filePath = image.getFilePathOriginal();
-                        setupPost(filePath);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
 
 
-                } else {
-                    Toast.makeText(getActivity(), "Unable to get image path", Toast.LENGTH_SHORT).show();
-                    imagePath = "";
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onError(final String reason) {
-        // TODO Auto-generated method stub
-        getActivity().runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(), reason,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("chooser_type")) {
-                chooserType = savedInstanceState.getInt("chooser_type");
-            }
-
-            if (savedInstanceState.containsKey("media_path")) {
-                filePath = savedInstanceState.getString("media_path");
-            }
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK
-                && (requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
-            if (imageChooserManager == null) {
-                reinitializeImageChooser();
-            }
-            imageChooserManager.submit(requestCode, data);
-        } else {
-
-        }
-    }
-
-    void imagePickerDialog(Context mContext) {
+    /*void imagePickerDialog(Context mContext) {
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -258,38 +158,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
 
         dialog.show();
     }
+*/
 
-    void setupPost(String filePath){
-        mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
-        File imgFile = new  File(filePath);
-        imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
-        ImageArray = stream.toByteArray();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(new Date());
-        ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
-        file.saveInBackground();
-        TimeLine timeLine = new TimeLine();
-        timeLine.setPostImage(file);
-        timeLine.setDateTime(timeStamp);
-        timeLine.setUserIcon(getUserImage());
-        timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
-        timeLine.setUserName("Prabhat Tiwari");
-        timeLine.setBodyText("Prabhat tiwari is a very good boy , " +
-                "and he is an engineer in pune, working in software company.");
-
-        timeLine.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    mProgressDialog.dismiss();
-                    //receiveMessage();
-                    receiveAllPost();
-                }
-            }
-        });
-    }
 
     void receiveAllPost(){
         ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
@@ -318,9 +188,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         receiveAllPost();
     }
 
-    private String getUserImage(){
-        return ParseUser.getCurrentUser().getString("profileImage");
-    }
+
 
     @Override
     public void onRefresh() {
@@ -334,18 +202,270 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         newFragment.show(ft, "");
     }
 
-    public static class PostDialogFragment extends android.support.v4.app.DialogFragment {
 
+
+    void setupPost(String status,String filePath){
+        mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
+        File imgFile = new  File(filePath);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
+        TimeLine timeLine = new TimeLine();
+        if (imgFile.exists()){
+            imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
+            ImageArray = stream.toByteArray();
+            ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
+            file.saveInBackground();
+            timeLine.setPostImage(file);
+            timeLine.setDateTime(timeStamp);
+            timeLine.setUserIcon(getUserImage());
+            timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
+            timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
+            timeLine.setBodyText(status);
+            timeLine.setAudiance(1);
+        }else{
+           // timeLine.setPostImage(new ParseFile(""));
+            timeLine.setDateTime(timeStamp);
+            timeLine.setUserIcon(getUserImage());
+            timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
+            timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
+            timeLine.setBodyText(status);
+            timeLine.setAudiance(1);
+        }
+        timeLine.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    mProgressDialog.dismiss();
+                    //receiveMessage();
+                    receiveAllPost();
+                }
+            }
+        });
+    }
+    private String getUserImage(){
+        return ParseUser.getCurrentUser().getString("profileImage");
+    }
+
+    public static class PostDialogFragment extends DialogFragment implements ImageChooserListener, View.OnClickListener {
+
+        private static String imagePath = null;
+        private ImageButton imageCamera,imageGallery;
+        private Button btnSave, btnCancel;
+        private ImageView dialogImageContainer;
+        private EditText editStatusDialog;
+        private static PostDialogFragment f;
+       // private static Activity context;
         static PostDialogFragment newInstance() {
-            PostDialogFragment f = new PostDialogFragment();
+             f = new PostDialogFragment();
+            f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
             return f;
         }
+        /*public PostDialogFragment(Activity act){
+            context = act;
+        }*/
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_profile, container, false);
+            View v = inflater.inflate(R.layout.fragment_create_post, container, false);
+            CircularImage profileImage = (CircularImage)v.findViewById(R.id.profileImageView);
+            imageCamera = (ImageButton)v.findViewById(R.id.imgCamera);
+            imageGallery = (ImageButton)v.findViewById(R.id.imgGallery);
+            btnSave = (Button)v.findViewById(R.id.btnSaveDialog);
+            btnCancel = (Button)v.findViewById(R.id.btnCancelDialog);
+            dialogImageContainer = (ImageView)v.findViewById(R.id.dialogImageContainer);
+            editStatusDialog = (EditText)v.findViewById(R.id.editStatus);
+            ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
+            profileImage.setImageUrl(ParseUser.getCurrentUser().getString("profileImage"), imageLoader);
+            imageCamera.setOnClickListener(this);
+            imageGallery.setOnClickListener(this);
+            btnSave.setOnClickListener(this);
+            btnCancel.setOnClickListener(this);
+
             return v;
+        }
+
+        @Override
+        public void onImageChosen(final ChosenImage image) {
+            // TODO Auto-generated method stub
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (image != null) {
+                        imagePath = image.getFilePathOriginal();
+                        try {
+                            filePath = image.getFilePathOriginal();
+                            showImageinContainer(filePath);
+                            //setupPost(filePath);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                            e.printStackTrace();
+                        }
+
+
+                    } else {
+                        Utils.showToastMessage(getActivity(), "Unable to get Image Path.");
+                        //Toast.makeText(getActivity(), "Unable to get image path", Toast.LENGTH_SHORT).show();
+                        imagePath = "";
+                    }
+                }
+            });
+
+        }
+
+        void showImageinContainer(String path){
+            try{
+                File imgFile = new  File(path);
+                if(imgFile.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    dialogImageContainer.setImageBitmap(myBitmap);
+                    //Log.e(TAG,convertImageToBase64String(imgFile));
+                   // removeSpaces();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(final String reason) {
+            // TODO Auto-generated method stub
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), reason,
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+
+        private void chooseImage() throws ChooserException {
+            chooserType = ChooserType.REQUEST_PICK_PICTURE;
+            imageChooserManager = new ImageChooserManager(this,
+                    ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
+            imageChooserManager.setImageChooserListener(this);
+            try {
+                filePath = imageChooserManager.choose();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void takePicture() throws ChooserException {
+            chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+            imageChooserManager = new ImageChooserManager(this,
+                    ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
+            imageChooserManager.setImageChooserListener(this);
+            try {
+                filePath = imageChooserManager.choose();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void reinitializeImageChooser() {
+            imageChooserManager = new ImageChooserManager(this, chooserType,
+                    "myfolder", true);
+            imageChooserManager.setImageChooserListener(this);
+            imageChooserManager.reinitialize(filePath);
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            outState.putInt("chooser_type", chooserType);
+            outState.putString("media_path", filePath);
+            super.onSaveInstanceState(outState);
+        }
+
+
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            // TODO Auto-generated method stub
+            if (savedInstanceState != null) {
+                if (savedInstanceState.containsKey("chooser_type")) {
+                    chooserType = savedInstanceState.getInt("chooser_type");
+                }
+
+                if (savedInstanceState.containsKey("media_path")) {
+                    filePath = savedInstanceState.getString("media_path");
+                }
+            }
+            super.onActivityCreated(savedInstanceState);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode == RESULT_OK
+                    && (requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
+                if (imageChooserManager == null) {
+                    reinitializeImageChooser();
+                }
+                imageChooserManager.submit(requestCode, data);
+            } else {
+
+            }
+        }
+        @Override
+        public void onStart() {
+            filePath = "";
+            Display display =((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int DisplayWidth ;
+            DisplayWidth = display.getWidth();
+            Window window = getDialog().getWindow();
+            window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            super.onStart();
+        }
+
+
+        @Override
+        public void onClick(View v) {
+
+            if (v == imageCamera){
+                try {
+                    takePicture();
+                } catch (ChooserException e) {
+                    e.printStackTrace();
+                }
+            }else if (v == imageGallery){
+                try {
+                    chooseImage();
+                } catch (ChooserException e) {
+                    e.printStackTrace();
+                }
+            }else if (v == btnCancel){
+                f.dismiss();
+            }else if (v == btnSave){
+                if (isValidate()){
+                    sendMessage(filePath,editStatusDialog.getText().toString());
+                }
+            }
+        }
+
+        boolean isValidate(){
+            if (editStatusDialog.getText().toString().trim().isEmpty() || editStatusDialog.getText().toString().trim().length() == 0){
+                Utils.showToastMessage(getActivity(),getString(R.string.error_status_message));
+                return false;
+            }else {
+                return true;
+            }
+        }
+
+
+        private void sendMessage( String url,String status) {
+            Log.d(TAG, "Broadcasting Publish Message");
+            Intent intent = new Intent(ApplicationConstant.CREATE_POST_DIALOG_FRAGMENT);
+            intent.putExtra(ApplicationConstant.IMAGE_URL, url);
+            intent.putExtra(ApplicationConstant.FLAG, status);
+            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+            f.dismiss();
         }
 
     }
@@ -355,16 +475,29 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
         @Override
         public void onReceive(Context context, Intent intent) {
             String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
-
             Log.d(TAG, "Got message: " + url);
             showDetailPostDialog(url);
 
         }
     };
+    private BroadcastReceiver mCreatePostMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
+            String status = intent.getStringExtra(ApplicationConstant.FLAG);
+            Log.d(TAG, "Got message: " + url);
+            //showDetailPostDialog(url);
+
+            setupPost(status,url);
+
+        }
+    };
+
 
     @Override
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCreatePostMessageReceiver);
        // dismissDetailDialog();
         super.onDestroy();
     }
@@ -372,6 +505,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     @Override
     public void onPause() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCreatePostMessageReceiver);
         super.onPause();
     }
 
@@ -379,6 +513,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
     public void onResume() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
                 new IntentFilter(ApplicationConstant.TIMELINE_ADAPTER));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCreatePostMessageReceiver,
+                new IntentFilter(ApplicationConstant.CREATE_POST_DIALOG_FRAGMENT));
 
         super.onResume();
     }
@@ -407,6 +543,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener 
                     R.drawable.ic_loading, R.drawable.ic_error));
 
             imageView.setImageUrl(url, imageLoader);
+
+
 
             return v;
         }

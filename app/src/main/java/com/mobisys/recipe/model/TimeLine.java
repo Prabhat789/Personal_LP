@@ -25,6 +25,11 @@ public class TimeLine extends ParseObject {
     public String getDateTime() {
         return getString("dateTime");
     }
+
+    public int getAudiance() {
+        return getInt("audiance");
+    }
+
     public ParseFile getPostImage() {
         return getParseFile("postImage");
     }
@@ -45,5 +50,8 @@ public class TimeLine extends ParseObject {
     }
     public void setPostImage(ParseFile postImage) {
         put("postImage", postImage);
+    }
+    public void setAudiance(int audiance) {
+        put("audiance", audiance);
     }
 }

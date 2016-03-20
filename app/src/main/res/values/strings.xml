@@ -13,4 +13,5 @@
     <string name="no_internet">No Internet Connection</string>
     <string name="unable_to_process_request">Unable to process your request, please try again.</string>
     <string name="location_not_available">Location not available.</string>
+    <string name="error_status_message">Can not proceed with blank Status.</string>
 </resources>
