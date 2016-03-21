@@ -18,6 +18,7 @@ import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
+import com.mobisys.recipe.util.Utils;
 
 import java.util.List;
 
@@ -30,10 +31,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     private List<TimeLine> mDataset;
     private Context mContext;
     private ImageLoader imageLoader;
+    private Utils utils;
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
-        TextView txtBody, txtUsername;
+        TextView txtBody, txtUsername, txtTimeAgo;
         ImageView imagePost;
         CircularImage userIcon;
         Button btnComments;
@@ -43,6 +45,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             super(itemView);
             txtBody = (TextView) itemView.findViewById(R.id.txtTimeline);
             imagePost = (ImageView)itemView.findViewById(R.id.imgPost);
+            txtTimeAgo = (TextView)itemView.findViewById(R.id.dateText);
             userIcon = (CircularImage)itemView.findViewById(R.id.imgUser);
             txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
             btnComments = (Button)itemView.findViewById(R.id.btnComments);
@@ -55,6 +58,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         mDataset = myDataset;
         mContext = context;
         imageLoader = ImageLoader.getInstance(mContext);
+        utils = new Utils(mContext);
 
     }
     @Override
@@ -71,6 +75,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
 
         holder.txtBody.setText(mDataset.get(position).getBodyText());
         holder.txtUsername.setText(mDataset.get(position).getUserName());
+        Log.e(TAG,mDataset.get(position).getDateTime());
+      //  holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
         String url = null;
         try{
             url = mDataset.get(position).getPostImage().getUrl();
@@ -135,6 +141,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         intent.putExtra(ApplicationConstant.IMAGE_URL, url);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
+
+
 
 
 }

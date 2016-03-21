@@ -22,8 +22,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Prabhat on 04/11/15.
@@ -103,6 +108,199 @@ public class Utils {
         }
 
     }
+
+    /*public static String getlongtoago(long createdAt) {
+        SimpleDateFormat userDateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+        SimpleDateFormat dateFormatNeeded = new SimpleDateFormat("MM/dd/yyyy HH:MM:SS");
+        Date date = null;
+        date = new Date(createdAt);
+        String crdate1 = dateFormatNeeded.format(date);
+
+        // Date Calculation
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        crdate1 = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(date);
+
+        // get current date time with Calendar()
+        Calendar cal = Calendar.getInstance();
+        String currenttime = dateFormat.format(cal.getTime());
+
+        Date CreatedAt = null;
+        Date current = null;
+        try {
+            CreatedAt = dateFormat.parse(crdate1);
+            current = dateFormat.parse(currenttime);
+        } catch (java.text.ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Get msec from each, and subtract.
+        long diff = current.getTime() - CreatedAt.getTime();
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        String time = null;
+        if (diffDays > 0) {
+            if (diffDays == 1) {
+                time = diffDays + "day ago ";
+            } else {
+                time = diffDays + "days ago ";
+            }
+        } else {
+            if (diffHours > 0) {
+                if (diffHours == 1) {
+                    time = diffHours + "hr ago";
+                } else {
+                    time = diffHours + "hrs ago";
+                }
+            } else {
+                if (diffMinutes > 0) {
+                    if (diffMinutes == 1) {
+                        time = diffMinutes + "min ago";
+                    } else {
+                        time = diffMinutes + "mins ago";
+                    }
+                } else {
+                    if (diffSeconds > 0) {
+                        time = diffSeconds + "secs ago";
+                    }
+                }
+
+            }
+
+        }
+        return time;
+    }*/
+
+    public String formatDate(String date) {
+
+        SimpleDateFormat sourceFormat = new SimpleDateFormat(
+                "dd-MM-yyyy HH:mm:ss");
+        sourceFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date parsed = null;
+        try {
+            // 2011-03-01 15:10:37
+            parsed = sourceFormat.parse(date);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } // => Date is in UTC now
+
+        TimeZone tz = TimeZone.getDefault();
+        SimpleDateFormat destFormat = new SimpleDateFormat(
+                "dd-MM-yyyy HH:mm:ss");
+        destFormat.setTimeZone(tz);
+
+        String result = destFormat.format(parsed);
+        System.out.println("Formated Date : " + result);
+        return result;
+
+    }
+
+    public String getTimeDiffrence(Context ctx,String date) {
+
+        // DateTimeUtils obj = new DateTimeUtils();
+        String strdate1;
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH) + 1;
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        int second = c.get(Calendar.SECOND);
+        int minute = c.get(Calendar.MINUTE);
+        int hourofday = c.get(Calendar.HOUR_OF_DAY);
+
+        strdate1 = mDay + "-" + mMonth + "-" + mYear + " " + hourofday + ":"
+                + minute + ":" + second;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                "dd-MM-yyyy HH:mm:ss");
+
+        try {
+
+			/*
+			 * Date date1 = simpleDateFormat.parse("13-10-2013 11:30:10"); Date
+			 * date2 = simpleDateFormat.parse("13-10-2013 20:35:55");
+			 */
+
+            Date date1 = simpleDateFormat.parse(date);
+            Date date2 = simpleDateFormat.parse(strdate1);
+
+            date = printDifference(ctx, date1, date2);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+
+    }
+
+    // 1 minute = 60 seconds
+    // 1 hour = 60 x 60 = 3600
+    // 1 day = 3600 x 24 = 86400
+    public String printDifference(Context ctx, Date startDate, Date endDate) {
+
+        String dateDifference;
+        // milliseconds
+        long different = endDate.getTime() - startDate.getTime();
+
+        System.out.println("startDate : " + startDate);
+        System.out.println("endDate : " + endDate);
+        System.out.println("different : " + different);
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        System.out.printf("%d days, %d hours, %d minutes, %d seconds%n",
+                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+
+        if (elapsedDays == 1) {
+            dateDifference = ctx.getResources().getString(
+                    R.string.update_ago)
+                    + " "
+                    + elapsedDays
+                    + " "
+                    + ctx.getResources().getString(R.string.day);
+        }else if (elapsedDays > 1 ) {
+            dateDifference = ctx.getResources().getString(
+                    R.string.oneday_ago);
+        } else if (elapsedHours >= 1) {
+            dateDifference = ctx.getResources().getString(
+                    R.string.update_ago)
+                    + " "
+                    + elapsedHours
+                    + " "
+                    + ctx.getResources().getString(R.string.hours);
+        } else if (elapsedMinutes >= 1) {
+            dateDifference = ctx.getResources().getString(
+                    R.string.update_ago)
+                    + " "
+                    + elapsedMinutes
+                    + " "
+                    + ctx.getResources().getString(R.string.minutes);
+        } else {
+            dateDifference = ctx.getResources().getString(R.string.online);
+        }
+
+        return dateDifference;
+
+    }
+
 
 
 

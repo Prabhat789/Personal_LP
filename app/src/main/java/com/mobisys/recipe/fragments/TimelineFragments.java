@@ -31,6 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.kbeanie.imagechooser.api.ChooserType;
@@ -166,7 +168,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
 
 
-    void setupPost(String status,String filePath){
+    void setupPost(String status,String filePath, int audiance){
         mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
         File imgFile = new  File(filePath);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
@@ -185,7 +187,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
             timeLine.setBodyText(status);
-            timeLine.setAudiance(1);
+            timeLine.setAudiance(audiance);
         }else{
            // timeLine.setPostImage(new ParseFile(""));
             timeLine.setDateTime(timeStamp);
@@ -193,7 +195,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
             timeLine.setBodyText(status);
-            timeLine.setAudiance(1);
+            timeLine.setAudiance(audiance);
         }
         timeLine.saveInBackground(new SaveCallback() {
             @Override
@@ -218,7 +220,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         private ImageView dialogImageContainer;
         private EditText editStatusDialog;
         private static PostDialogFragment f;
-       // private static Activity context;
+        private  int audiance;
+        private RadioGroup audianceGroup;
         static PostDialogFragment newInstance() {
              f = new PostDialogFragment();
             f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
@@ -239,10 +242,23 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             btnCancel = (Button)v.findViewById(R.id.btnCancelDialog);
             dialogImageContainer = (ImageView)v.findViewById(R.id.dialogImageContainer);
             editStatusDialog = (EditText)v.findViewById(R.id.editStatus);
-            //ImageLoader imageLoader = CustomVolleyRequestQueue.getInstance(getActivity()).getImageLoader();
-            //profileImage.setImageUrl(ParseUser.getCurrentUser().getString("profileImage"), imageLoader);
-            //Picasso.with(getActivity()).load(ParseUser.getCurrentUser().getString("profileImage")).into(profileImage);
-            loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),profileImage,getActivity());
+            audianceGroup = (RadioGroup)v.findViewById(R.id.audianceGroup);
+            RadioButton radioPublic = (RadioButton)v.findViewById(R.id.radioPublic);
+            radioPublic.setChecked(true);
+            audiance = 1;
+            audianceGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if(checkedId == R.id.radioPublic) {
+                        audiance = 1;
+                    } else if(checkedId == R.id.radioPrivate) {
+                        audiance = 2;
+                    } else if(checkedId == R.id.radioFriends)  {
+                        audiance = 3;
+                    }
+                }
+            });
+            loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"), profileImage, getActivity());
             imageCamera.setOnClickListener(this);
             imageGallery.setOnClickListener(this);
             btnSave.setOnClickListener(this);
@@ -438,6 +454,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             Intent intent = new Intent(ApplicationConstant.CREATE_POST_DIALOG_FRAGMENT);
             intent.putExtra(ApplicationConstant.IMAGE_URL, url);
             intent.putExtra(ApplicationConstant.FLAG, status);
+            intent.putExtra(ApplicationConstant.FLAG1,audiance);
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
             f.dismiss();
         }
@@ -459,10 +476,11 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         public void onReceive(Context context, Intent intent) {
             String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
             String status = intent.getStringExtra(ApplicationConstant.FLAG);
+            int audiance = intent.getIntExtra(ApplicationConstant.FLAG1,0);
             Log.d(TAG, "Got message: " + url);
             //showDetailPostDialog(url);
 
-            setupPost(status,url);
+            setupPost(status,url,audiance);
 
         }
     };
@@ -514,10 +532,6 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             Bundle bundle = this.getArguments();
              url = bundle.getString(ApplicationConstant.IMAGE_URL);
             imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
-
-
-
-
             return v;
         }
         public void loadImage( String url,ImageView imageView, Context context) {
