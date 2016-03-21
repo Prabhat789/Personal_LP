@@ -35,10 +35,6 @@ public class ImageLoader {
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
-    /*public ImageLoader(Activity context){
-        fileCache=new FileCache(context);
-        executorService=Executors.newFixedThreadPool(5);
-    }*/
     public static synchronized ImageLoader getInstance(Context ctx) {
         if(instance == null) {
             instance = new ImageLoader(ctx);
