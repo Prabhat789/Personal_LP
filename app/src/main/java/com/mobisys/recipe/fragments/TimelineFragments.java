@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by ubuntu1 on 11/3/16.
@@ -171,8 +172,19 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     void setupPost(String status,String filePath, int audiance){
         mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
         File imgFile = new  File(filePath);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(new Date());
+
+        /*Date myDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+        calendar.setTime(myDate);
+        Date time = calendar.getTime();*/
+        SimpleDateFormat outputFmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        /*String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+                .format(new Date());*/
+        outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String timeStamp = outputFmt.format(new Date());
+
+       // "UpdateDate":"21-03-2016 10:18:28"
         TimeLine timeLine = new TimeLine();
         if (imgFile.exists()){
             imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());

@@ -75,8 +75,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
 
         holder.txtBody.setText(mDataset.get(position).getBodyText());
         holder.txtUsername.setText(mDataset.get(position).getUserName());
-        Log.e(TAG,mDataset.get(position).getDateTime());
-      //  holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
+        //Log.e(TAG,mDataset.get(position).getDateTime());
+        holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
         String url = null;
         try{
             url = mDataset.get(position).getPostImage().getUrl();

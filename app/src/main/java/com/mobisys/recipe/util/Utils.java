@@ -294,6 +294,7 @@ public class Utils {
                     + " "
                     + ctx.getResources().getString(R.string.minutes);
         } else {
+            Log.e(TAG,""+elapsedMinutes);
             dateDifference = ctx.getResources().getString(R.string.online);
         }
 

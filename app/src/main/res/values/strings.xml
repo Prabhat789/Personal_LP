@@ -16,8 +16,8 @@
     <string name="error_status_message">Can not proceed with blank Status.</string>
     <string name="update_ago"></string>
     <string name="oneday_ago">More than 1 day ago</string>
-    <string name="hours">Hours</string>
-    <string name="day">Day</string>
-    <string name="minutes">Minutes</string>
+    <string name="hours">Hours ago</string>
+    <string name="day">Day ago</string>
+    <string name="minutes">Minutes ago</string>
     <string name="online">Just Now</string>
 </resources>
