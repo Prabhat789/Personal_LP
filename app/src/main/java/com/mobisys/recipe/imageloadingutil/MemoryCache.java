@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 public class MemoryCache {
 
-    private static final String TAG = "MemoryCache";
+    private static final String TAG = MemoryCache.class.getSimpleName();
     private Map<String, Bitmap> cache=Collections.synchronizedMap(
             new LinkedHashMap<String, Bitmap>(10,1.5f,true));//Last argument true for LRU ordering
     private long size=0;//current allocated size
@@ -19,7 +19,7 @@ public class MemoryCache {
  
     public MemoryCache(){
         //use 25% of available heap size
-        setLimit(Runtime.getRuntime().maxMemory()/4);
+        setLimit(Runtime.getRuntime().maxMemory() / 4);
     }
     
     public void setLimit(long new_limit){
@@ -28,11 +28,15 @@ public class MemoryCache {
     }
 
     public Bitmap get(String id){
-        try{
-            if(!cache.containsKey(id))
+        try {
+            if (!cache.containsKey(id)) {
+                Log.e(TAG, "Image null");
                 return null;
+            }else{
+                Log.e(TAG, "Loading Image");
             //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78 
             return cache.get(id);
+        }
         }catch(NullPointerException ex){
             ex.printStackTrace();
             return null;

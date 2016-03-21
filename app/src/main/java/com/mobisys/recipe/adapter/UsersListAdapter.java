@@ -49,7 +49,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
     public UsersListAdapter(Context context, List<ParseUser> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = new ImageLoader(mContext);
+        imageLoader =  ImageLoader.getInstance(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }

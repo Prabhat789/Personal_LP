@@ -1,6 +1,5 @@
 package com.mobisys.recipe.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -251,9 +250,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             return v;
         }
-        private void loadUserIcon(String url,CircularImage imageView, Activity context) {
+        private void loadUserIcon(String url,CircularImage imageView, Context context) {
             try{
-                ImageLoader imageLoader = new ImageLoader(context);
+                ImageLoader imageLoader = ImageLoader.getInstance(context);
                 //Ion.with(context).load(url).intoImageView(imageView);
                 imageLoader.DisplayImage(url,imageView);
             }catch (IllegalArgumentException e){
@@ -496,6 +495,9 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
     public static class DetailPostDialog extends DialogFragment {
 
+        private ImageView imageView;
+        private String url = null;
+
         //private Context context;
         static DetailPostDialog newInstance() {
             DetailPostDialog f = new DetailPostDialog();
@@ -510,16 +512,16 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
             Bundle bundle = this.getArguments();
-            String url = bundle.getString(ApplicationConstant.IMAGE_URL);
-            ImageView imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
-            loadImage(url,imageView,getActivity());
+             url = bundle.getString(ApplicationConstant.IMAGE_URL);
+            imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
+
 
 
 
             return v;
         }
-        public void loadImage( String url,ImageView imageView, Activity context) {
-            ImageLoader loader = new ImageLoader(context);
+        public void loadImage( String url,ImageView imageView, Context context) {
+            ImageLoader loader = ImageLoader.getInstance(context);
             loader.DisplayImage(url, imageView);
         }
 
@@ -533,6 +535,12 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             super.onStart();
+        }
+
+        @Override
+        public void onResume() {
+            loadImage(url,imageView,getActivity());
+            super.onResume();
         }
     }
 

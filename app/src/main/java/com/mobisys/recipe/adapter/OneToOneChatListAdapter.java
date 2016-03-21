@@ -52,7 +52,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
         mDataset = myDataset;
         mContext = context;
         mUserId = userId;
-        imageLoader = new ImageLoader(mContext);
+        imageLoader =  ImageLoader.getInstance(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
 

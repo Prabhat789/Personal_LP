@@ -49,7 +49,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
     public FriendListAdapter(Context context, List<Friends> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = new ImageLoader(mContext);
+        imageLoader = ImageLoader.getInstance(mContext);
         //imageLoader = CustomVolleyRequestQueue.getInstance(mContext).getImageLoader();
 
     }

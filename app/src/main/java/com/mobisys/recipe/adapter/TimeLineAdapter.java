@@ -54,9 +54,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public TimeLineAdapter(Context context, List<TimeLine> myDataset) {
         mDataset = myDataset;
         mContext = context;
-        imageLoader = new ImageLoader(mContext);
-
-
+        imageLoader = ImageLoader.getInstance(mContext);
 
     }
     @Override

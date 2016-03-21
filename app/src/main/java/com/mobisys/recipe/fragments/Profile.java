@@ -41,7 +41,7 @@ public class Profile extends Fragment implements View.OnClickListener {
         txtFrom = (TextView)rootView.findViewById(R.id.txtFrom);
         txtLivesIn = (TextView)rootView.findViewById(R.id.txtLivesin);
         btnMessage = (Button)rootView.findViewById(R.id.btnMessage);
-        imageLoader = new ImageLoader(getActivity());
+        imageLoader =  ImageLoader.getInstance(getActivity());
 
         loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),userProfileImage,getActivity());
 
