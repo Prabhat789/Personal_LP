@@ -27,10 +27,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -72,19 +77,19 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionButton fabAdd;
-    private static final int RESULT_OK           = -1;
+    private static final int RESULT_OK = -1;
     private static ImageChooserManager imageChooserManager;
-    private static String filePath="";
+    private static String filePath = "";
     private static int chooserType;
     private Bitmap imageBitmap = null;
     private byte[] ImageArray = null;
     private String imagePath = "";
     private Dialog dialog;
-    //private ImageView imageCamera, imageGallery;
     private ProgressDialog mProgressDialog;
     private ArrayList<TimeLine> allPosts;
     private TimeLineAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,14 +102,14 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(8));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.parse_green, R.color.parse_color);
         allPosts = new ArrayList<TimeLine>();
         refreshAllPost();
         mAdapter = new TimeLineAdapter(getActivity(), allPosts);
         mRecyclerView.setAdapter(mAdapter);
-        fabAdd = (FloatingActionButton)rootView.findViewById(R.id.fabAdd);
+        fabAdd = (FloatingActionButton) rootView.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
 
         /*mRecyclerView.setOnScrollListener(new ScrollListener(getActivity()) {
@@ -120,25 +125,23 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if (v == fabAdd){
+        if (v == fabAdd) {
             showDialog();
         }
     }
 
 
-    void receiveAllPost(){
+    void receiveAllPost() {
         ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
         query.setLimit(50);
         query.findInBackground(new FindCallback<TimeLine>() {
             public void done(List<TimeLine> messages, ParseException e) {
                 if (e == null) {
-
                     allPosts.clear();
                     Collections.reverse(messages);
                     allPosts.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     mRecyclerView.invalidate();
-                    // mRecyclerView.scrollToPosition(allPosts.size()-1);
                 } else {
                     Log.d("message", "Error: " + e.getMessage());
                 }
@@ -146,13 +149,11 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         });
 
 
-
     }
 
     private void refreshAllPost() {
         receiveAllPost();
     }
-
 
 
     @Override
@@ -168,25 +169,19 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     }
 
 
+    void setupPost(String status, String filePath, int audiance) {
+        mProgressDialog = ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
+        File imgFile = new File(filePath);
 
-    void setupPost(String status,String filePath, int audiance){
-        mProgressDialog= ProgressDialog.show(getActivity(), "", getString(R.string.uploading), true);
-        File imgFile = new  File(filePath);
 
-        /*Date myDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-        calendar.setTime(myDate);
-        Date time = calendar.getTime();*/
-        SimpleDateFormat outputFmt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        /*String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
-                .format(new Date());*/
+        SimpleDateFormat outputFmt = new SimpleDateFormat(ApplicationConstant.DATE_FORMATE);
         outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String timeStamp = outputFmt.format(new Date());
+        String eventDate = outputFmt.format(new Date());
 
-       // "UpdateDate":"21-03-2016 10:18:28"
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
         TimeLine timeLine = new TimeLine();
-        if (imgFile.exists()){
+        if (imgFile.exists()) {
             imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
@@ -194,20 +189,22 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
             file.saveInBackground();
             timeLine.setPostImage(file);
-            timeLine.setDateTime(timeStamp);
+            timeLine.setDateTime(eventDate);
             timeLine.setUserIcon(getUserImage());
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
             timeLine.setBodyText(status);
             timeLine.setAudiance(audiance);
-        }else{
-           // timeLine.setPostImage(new ParseFile(""));
-            timeLine.setDateTime(timeStamp);
+            timeLine.setIsImageSet(true);
+        } else {
+            // timeLine.setPostImage(new ParseFile(""));
+            timeLine.setDateTime(eventDate);
             timeLine.setUserIcon(getUserImage());
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
             timeLine.setBodyText(status);
             timeLine.setAudiance(audiance);
+            timeLine.setIsImageSet(false);
         }
         timeLine.saveInBackground(new SaveCallback() {
             @Override
@@ -220,22 +217,24 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             }
         });
     }
-    private String getUserImage(){
+
+    private String getUserImage() {
         return ParseUser.getCurrentUser().getString("profileImage");
     }
 
     public static class PostDialogFragment extends DialogFragment implements ImageChooserListener, View.OnClickListener {
 
         private static String imagePath = null;
-        private ImageButton imageCamera,imageGallery;
+        private ImageButton imageCamera, imageGallery;
         private Button btnSave, btnCancel;
         private ImageView dialogImageContainer;
         private EditText editStatusDialog;
         private static PostDialogFragment f;
-        private  int audiance;
+        private int audiance;
         private RadioGroup audianceGroup;
+
         static PostDialogFragment newInstance() {
-             f = new PostDialogFragment();
+            f = new PostDialogFragment();
             f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
             return f;
         }
@@ -247,25 +246,25 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_create_post, container, false);
-            CircularImage profileImage = (CircularImage)v.findViewById(R.id.profileImageView);
-            imageCamera = (ImageButton)v.findViewById(R.id.imgCamera);
-            imageGallery = (ImageButton)v.findViewById(R.id.imgGallery);
-            btnSave = (Button)v.findViewById(R.id.btnSaveDialog);
-            btnCancel = (Button)v.findViewById(R.id.btnCancelDialog);
-            dialogImageContainer = (ImageView)v.findViewById(R.id.dialogImageContainer);
-            editStatusDialog = (EditText)v.findViewById(R.id.editStatus);
-            audianceGroup = (RadioGroup)v.findViewById(R.id.audianceGroup);
-            RadioButton radioPublic = (RadioButton)v.findViewById(R.id.radioPublic);
+            CircularImage profileImage = (CircularImage) v.findViewById(R.id.profileImageView);
+            imageCamera = (ImageButton) v.findViewById(R.id.imgCamera);
+            imageGallery = (ImageButton) v.findViewById(R.id.imgGallery);
+            btnSave = (Button) v.findViewById(R.id.btnSaveDialog);
+            btnCancel = (Button) v.findViewById(R.id.btnCancelDialog);
+            dialogImageContainer = (ImageView) v.findViewById(R.id.dialogImageContainer);
+            editStatusDialog = (EditText) v.findViewById(R.id.editStatus);
+            audianceGroup = (RadioGroup) v.findViewById(R.id.audianceGroup);
+            RadioButton radioPublic = (RadioButton) v.findViewById(R.id.radioPublic);
             radioPublic.setChecked(true);
             audiance = 1;
             audianceGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    if(checkedId == R.id.radioPublic) {
+                    if (checkedId == R.id.radioPublic) {
                         audiance = 1;
-                    } else if(checkedId == R.id.radioPrivate) {
+                    } else if (checkedId == R.id.radioPrivate) {
                         audiance = 2;
-                    } else if(checkedId == R.id.radioFriends)  {
+                    } else if (checkedId == R.id.radioFriends) {
                         audiance = 3;
                     }
                 }
@@ -278,12 +277,13 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             return v;
         }
-        private void loadUserIcon(String url,CircularImage imageView, Context context) {
-            try{
+
+        private void loadUserIcon(String url, CircularImage imageView, Context context) {
+            try {
                 ImageLoader imageLoader = ImageLoader.getInstance(context);
                 //Ion.with(context).load(url).intoImageView(imageView);
-                imageLoader.DisplayImage(url,imageView);
-            }catch (IllegalArgumentException e){
+                imageLoader.DisplayImage(url, imageView);
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
 
@@ -318,16 +318,16 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
         }
 
-        void showImageinContainer(String path){
-            try{
-                File imgFile = new  File(path);
-                if(imgFile.exists()){
+        void showImageinContainer(String path) {
+            try {
+                File imgFile = new File(path);
+                if (imgFile.exists()) {
                     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     dialogImageContainer.setImageBitmap(myBitmap);
                     //Log.e(TAG,convertImageToBase64String(imgFile));
-                   // removeSpaces();
+                    // removeSpaces();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -385,7 +385,6 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         }
 
 
-
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             // TODO Auto-generated method stub
@@ -413,11 +412,12 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             }
         }
+
         @Override
         public void onStart() {
             filePath = "";
-            Display display =((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            int DisplayWidth ;
+            Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int DisplayWidth;
             DisplayWidth = display.getWidth();
             Window window = getDialog().getWindow();
             window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
@@ -430,45 +430,50 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         @Override
         public void onClick(View v) {
 
-            if (v == imageCamera){
+            if (v == imageCamera) {
                 try {
                     takePicture();
                 } catch (ChooserException e) {
                     e.printStackTrace();
                 }
-            }else if (v == imageGallery){
+            } else if (v == imageGallery) {
                 try {
                     chooseImage();
                 } catch (ChooserException e) {
                     e.printStackTrace();
                 }
-            }else if (v == btnCancel){
+            } else if (v == btnCancel) {
                 f.dismiss();
-            }else if (v == btnSave){
-                if (isValidate()){
-                    sendMessage(filePath,editStatusDialog.getText().toString());
+            } else if (v == btnSave) {
+                if (isValidate()) {
+                    sendMessage(filePath, editStatusDialog.getText().toString());
                 }
             }
         }
 
-        boolean isValidate(){
-            if (editStatusDialog.getText().toString().trim().isEmpty() || editStatusDialog.getText().toString().trim().length() == 0){
-                Utils.showToastMessage(getActivity(),getString(R.string.error_status_message));
+        boolean isValidate() {
+            if (editStatusDialog.getText().toString().trim().isEmpty() || editStatusDialog.getText().toString().trim().length() == 0) {
+                Utils.showToastMessage(getActivity(), getString(R.string.error_status_message));
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
 
 
-        private void sendMessage( String url,String status) {
+        private void sendMessage(String url, String status) {
             Log.d(TAG, "Broadcasting Publish Message");
             Intent intent = new Intent(ApplicationConstant.CREATE_POST_DIALOG_FRAGMENT);
             intent.putExtra(ApplicationConstant.IMAGE_URL, url);
             intent.putExtra(ApplicationConstant.FLAG, status);
-            intent.putExtra(ApplicationConstant.FLAG1,audiance);
+            intent.putExtra(ApplicationConstant.FLAG1, audiance);
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-            f.dismiss();
+            try {
+                f.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //f.dismiss();
         }
 
     }
@@ -488,11 +493,11 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         public void onReceive(Context context, Intent intent) {
             String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
             String status = intent.getStringExtra(ApplicationConstant.FLAG);
-            int audiance = intent.getIntExtra(ApplicationConstant.FLAG1,0);
+            int audiance = intent.getIntExtra(ApplicationConstant.FLAG1, 0);
             Log.d(TAG, "Got message: " + url);
             //showDetailPostDialog(url);
 
-            setupPost(status,url,audiance);
+            setupPost(status, url, audiance);
 
         }
     };
@@ -502,7 +507,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCreatePostMessageReceiver);
-       // dismissDetailDialog();
+        // dismissDetailDialog();
         super.onDestroy();
     }
 
@@ -523,15 +528,19 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         super.onResume();
     }
 
-    public static class DetailPostDialog extends DialogFragment {
+    public static class DetailPostDialog extends DialogFragment implements Animation.AnimationListener {
 
         private ImageView imageView;
         private String url = null;
+        private LinearLayout llTopDialog, llBottomDialog;
+        private Animation fadeIn, fadeOut;
+        private Boolean istxtVisible = true;
+        //private CardView cardViewDialog;
 
         //private Context context;
         static DetailPostDialog newInstance() {
             DetailPostDialog f = new DetailPostDialog();
-            f.setStyle( DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
+            f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
             return f;
         }
 
@@ -542,19 +551,55 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
             View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
             Bundle bundle = this.getArguments();
-             url = bundle.getString(ApplicationConstant.IMAGE_URL);
-            imageView = (ImageView)v.findViewById(R.id.imgPostDialog);
+            url = bundle.getString(ApplicationConstant.IMAGE_URL);
+            imageView = (ImageView) v.findViewById(R.id.imgPostDialog);
+
+            llTopDialog = (LinearLayout) v.findViewById(R.id.llTopDialog);
+            llBottomDialog = (LinearLayout) v.findViewById(R.id.llBottomDialog);
+            //cardViewDialog = (CardView)v.findViewById(R.id.card_viewDialog);
+
+            fadeIn = new AlphaAnimation(0, 1);
+            fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+            fadeIn.setDuration(500);
+
+            fadeOut = new AlphaAnimation(1, 0);
+            fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+            fadeOut.setStartOffset(100);
+            fadeOut.setDuration(500);
+            fadeIn.setAnimationListener(this);
+            fadeOut.setAnimationListener(this);
+            /*AnimationSet animation = new AnimationSet(false); //change to false
+            animation.addAnimation(fadeIn);
+            animation.addAnimation(fadeOut);*/
+
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (istxtVisible) {
+                        llTopDialog.startAnimation(fadeOut);
+                        llBottomDialog.startAnimation(fadeOut);
+                        istxtVisible = false;
+                    } else {
+                        llTopDialog.startAnimation(fadeIn);
+                        llBottomDialog.startAnimation(fadeIn);
+                        istxtVisible = true;
+                    }
+
+                }
+            });
             return v;
         }
-        public void loadImage( String url,ImageView imageView, Context context) {
+
+        public void loadImage(String url, ImageView imageView, Context context) {
             ImageLoader loader = ImageLoader.getInstance(context);
             loader.DisplayImage(url, imageView);
         }
 
         @Override
         public void onStart() {
-            Display display =((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            int DisplayWidth ;
+            Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int DisplayWidth;
             DisplayWidth = display.getWidth();
             Window window = getDialog().getWindow();
             window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
@@ -565,18 +610,84 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
         @Override
         public void onResume() {
-            loadImage(url,imageView,getActivity());
+            loadImage(url, imageView, getActivity());
             super.onResume();
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if (animation.equals(fadeOut)) {
+                llBottomDialog.setVisibility(View.INVISIBLE);
+                llTopDialog.setVisibility(View.INVISIBLE);
+                llBottomDialog.clearAnimation();
+                llTopDialog.clearAnimation();
+            } else {
+                llBottomDialog.setVisibility(View.VISIBLE);
+                llTopDialog.setVisibility(View.VISIBLE);
+                llBottomDialog.clearAnimation();
+                llTopDialog.clearAnimation();
+            }
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
         }
     }
 
-    void showDetailPostDialog( String url) {
+    void showDetailPostDialog(String url) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         DialogFragment newFragment = DetailPostDialog.newInstance();
         Bundle bundle = new Bundle();
         bundle.putString(ApplicationConstant.IMAGE_URL, url);
         newFragment.setArguments(bundle);
         newFragment.show(ft, "detailDialog");
+    }
+
+
+    public static class CommentsDialog extends DialogFragment {
+
+        private EditText editCommentBox;
+        private Button btnCancel, btnPost;
+        private RecyclerView mCommentList;
+        private RecyclerView.LayoutManager mLayoutManager;
+
+        static DetailPostDialog newInstance() {
+            DetailPostDialog f = new DetailPostDialog();
+            f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
+            return f;
+        }
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
+            Bundle bundle = this.getArguments();
+            /*url = bundle.getString(ApplicationConstant.IMAGE_URL);
+            imageView = (ImageView) v.findViewById(R.id.imgPostDialog);*/
+
+
+            return v;
+        }
+
+        @Override
+        public void onStart() {
+            Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int DisplayWidth;
+            DisplayWidth = display.getWidth();
+            Window window = getDialog().getWindow();
+            window.setLayout(DisplayWidth, ActionBar.LayoutParams.MATCH_PARENT);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            super.onStart();
+        }
+
     }
 
 

@@ -26,8 +26,16 @@ public class TimeLine extends ParseObject {
         return getString("dateTime");
     }
 
+    public boolean getIsImageSet() {
+        return getBoolean("isImageSet");
+    }
+
+
     public int getAudiance() {
         return getInt("audiance");
+    }
+    public Comments getCommnts(){
+        return (Comments) getParseObject("Comments");
     }
 
     public ParseFile getPostImage() {
@@ -54,4 +62,14 @@ public class TimeLine extends ParseObject {
     public void setAudiance(int audiance) {
         put("audiance", audiance);
     }
+
+    public void setIsImageSet(boolean isImageSet) {
+        put("isImageSet", isImageSet);
+    }
+
+    public void setCommnts(Comments comments){
+        put("Comments",comments);
+    }
+
+
 }

@@ -177,7 +177,7 @@ public class Utils {
     public String formatDate(String date) {
 
         SimpleDateFormat sourceFormat = new SimpleDateFormat(
-                "dd-MM-yyyy HH:mm:ss");
+                ApplicationConstant.DATE_FORMATE);
         sourceFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date parsed = null;
         try {
@@ -190,7 +190,7 @@ public class Utils {
 
         TimeZone tz = TimeZone.getDefault();
         SimpleDateFormat destFormat = new SimpleDateFormat(
-                "dd-MM-yyyy HH:mm:ss");
+                ApplicationConstant.DATE_FORMATE);
         destFormat.setTimeZone(tz);
 
         String result = destFormat.format(parsed);
@@ -216,7 +216,7 @@ public class Utils {
                 + minute + ":" + second;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd-MM-yyyy HH:mm:ss");
+                ApplicationConstant.DATE_FORMATE);
 
         try {
 
@@ -276,7 +276,7 @@ public class Utils {
                     + elapsedDays
                     + " "
                     + ctx.getResources().getString(R.string.day);
-        }else if (elapsedDays > 1 ) {
+        }else if (elapsedDays > 1) {
             dateDifference = ctx.getResources().getString(
                     R.string.oneday_ago);
         } else if (elapsedHours >= 1) {

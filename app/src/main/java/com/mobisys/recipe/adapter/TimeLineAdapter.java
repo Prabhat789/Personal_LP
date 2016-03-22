@@ -36,10 +36,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
         TextView txtBody, txtUsername, txtTimeAgo;
-        ImageView imagePost;
+        ImageView imagePost, audIcom;
         CircularImage userIcon;
         Button btnComments;
         CardView card_view;
+
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -50,6 +51,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
             btnComments = (Button)itemView.findViewById(R.id.btnComments);
             card_view = (CardView)itemView.findViewById(R.id.card_view);
+            audIcom = (ImageView)itemView.findViewById(R.id.audianceIcon);
 
         }
 
@@ -77,23 +79,24 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.txtUsername.setText(mDataset.get(position).getUserName());
         //Log.e(TAG,mDataset.get(position).getDateTime());
         holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
-        String url = null;
+        setAudIcon(holder.audIcom, mDataset.get(position).getAudiance());
+        loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
+        /*String url = null;
         try{
             url = mDataset.get(position).getPostImage().getUrl();
         }catch (Exception e){
             e.printStackTrace();
             url = null;
-        }
+        }*/
 
-        if (url == null){
-            holder.imagePost.setVisibility(View.GONE);
-        }else {
+        if (mDataset.get(position).getIsImageSet()){
+            String url = mDataset.get(position).getPostImage().getUrl();
             holder.imagePost.setVisibility(View.VISIBLE);
-            loadImage(url,holder.imagePost,mContext);
+            loadImage(url, holder.imagePost, mContext);
+        }else {
+            holder.imagePost.setVisibility(View.GONE);
 
         }
-
-        loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
 
 
         holder.btnComments.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +109,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(mDataset.get(position).getPostImage().getUrl());
+                if (mDataset.get(position).getIsImageSet()){
+                    sendMessage(mDataset.get(position).getPostImage().getUrl());
+                }
+
             }
         });
 
@@ -143,6 +149,24 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
     }
 
 
+
+    private void setAudIcon(ImageView icon,int id){
+        switch (id){
+            case 1:
+                 icon.setImageResource(R.drawable.ic_public_grey);
+                break;
+            case 2:
+                icon.setImageResource( R.drawable.ic_personal_grey);
+                break;
+            case 3:
+                icon.setImageResource( R.drawable.ic_friends_grey);
+                break;
+            default:
+                icon.setImageResource(R.drawable.ic_public_grey);
+                break;
+        }
+
+    }
 
 
 }

@@ -25,6 +25,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile files('libs/mpandroidchartlibrary-2-1-6.jar')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
@@ -34,7 +35,5 @@ dependencies {
     compile 'com.parse:parse-android:1.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.kbeanie:image-chooser-library:1.5.2@aar'
-
-
 
 }

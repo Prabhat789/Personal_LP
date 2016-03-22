@@ -12,5 +12,8 @@
     <color name="parse_title">#093A59</color>
     <color name="red">#FB0128</color>
     <color name="smoke_white">#a3a3a3</color>
+    <color name="light_smoke_white">#b0b0b0</color>
     <color name="trans_black">#b3000000</color>
+    <color name="dark_grey">#575757</color>
+    <color name="dark_transparent">#e6000000</color>
 </resources>
