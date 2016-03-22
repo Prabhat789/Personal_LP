@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -22,24 +21,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ImageLoader {
-    private static final String TAG = ImageLoader.class.getSimpleName();
-    private static ImageLoader instance = null;
-    private static Context ctx;
+    
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService; 
     
     public ImageLoader(Context context){
-        ctx = context;
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
-    public static synchronized ImageLoader getInstance(Context ctx) {
-        if(instance == null) {
-            instance = new ImageLoader(ctx);
-        }
-        return instance;
+    public ImageLoader(Activity context){
+        fileCache=new FileCache(context);
+        executorService=Executors.newFixedThreadPool(5);
     }
 
     
@@ -49,10 +43,8 @@ public class ImageLoader {
     	//System.out.println("Loading................");
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
-        if(bitmap!=null) {
-            Log.e(TAG, "Loading Image");
+        if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
-        }
         else
         {
             queuePhoto(url, imageView);
@@ -69,6 +61,7 @@ public class ImageLoader {
     private Bitmap getBitmap(String url) 
     {
         File f=fileCache.getFile(url);
+        
         //from SD cache
         Bitmap b = decodeFile(f);
         if(b!=null)
