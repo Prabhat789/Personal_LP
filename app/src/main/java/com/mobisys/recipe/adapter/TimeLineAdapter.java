@@ -102,7 +102,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.btnComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                sendCommentMessage(mDataset.get(position).getObjectId().toString());
             }
         });
 
@@ -145,6 +145,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         Log.d(TAG, "Broadcasting message");
         Intent intent = new Intent(ApplicationConstant.TIMELINE_ADAPTER);
         intent.putExtra(ApplicationConstant.IMAGE_URL, url);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+    }
+
+    private void sendCommentMessage( String postId) {
+        Log.d(TAG, "Broadcasting message");
+        Intent intent = new Intent(ApplicationConstant.COMMENT_DIALOG_FRAGMENT);
+        intent.putExtra(ApplicationConstant.FLAG, postId);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 

@@ -18,6 +18,7 @@ public class ApplicationConstant {
     public static final String FRIEND_LIST_ADAPTER = "friend_list_adapter";
     public static final String TIMELINE_ADAPTER = "timeline_adapter";
     public static final String CREATE_POST_DIALOG_FRAGMENT = "create_post_dialog_fragment";
+    public static final String COMMENT_DIALOG_FRAGMENT = "comment_dialog_fragment";
     public static final String FLAG = "data_flag";
     public static final String FLAG1 = "data_flag1";
     public static final String IMAGE_URL = "image_url";

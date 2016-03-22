@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.mobisys.recipe.model.Comments;
 import com.mobisys.recipe.model.Friends;
 import com.mobisys.recipe.model.Message;
 import com.mobisys.recipe.model.TimeLine;
@@ -35,6 +36,7 @@ public class RecipeApplication extends Application {
         ParseObject.registerSubclass(TimeLine.class);
         ParseObject.registerSubclass(Friends.class);
         ParseObject.registerSubclass(ParseUser.class);
+        ParseObject.registerSubclass(Comments.class);
 
 
         Parse.initialize(getAppContext());

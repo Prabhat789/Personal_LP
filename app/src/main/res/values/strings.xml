@@ -14,6 +14,7 @@
     <string name="unable_to_process_request">Unable to process your request, please try again.</string>
     <string name="location_not_available">Location not available.</string>
     <string name="error_status_message">Can not proceed with blank Status.</string>
+    <string name="error_comment_message">Can not proceed with blank Comment.</string>
     <string name="update_ago"></string>
     <string name="oneday_ago">More than 1 day ago</string>
     <string name="hours">hr</string>

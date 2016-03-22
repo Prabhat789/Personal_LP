@@ -24,6 +24,10 @@ public class Comments extends ParseObject {
     public String getDateTime() {
         return getString("dateTime");
     }
+    public String getParent() {
+        return getString("parent");
+    }
+
 
     public void setUserId(String userId) {
         put("userId", userId);
@@ -39,6 +43,9 @@ public class Comments extends ParseObject {
     }
     public void setDateTime(String dateTime) {
         put("dateTime", dateTime);
+    }
+    public void setParent(String parent) {
+        put("parent", parent);
     }
 
 

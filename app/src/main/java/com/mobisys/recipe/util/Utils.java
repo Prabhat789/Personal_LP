@@ -385,4 +385,19 @@ public class Utils {
         toast.show();
     }
 
+    public static String getUserImage(){
+        return  ParseUser.getCurrentUser().getString("profileImage");
+    }
+    public static String getUserId(){
+        return ParseUser.getCurrentUser().getObjectId();
+    }
+    public static String getUserName(){
+        return ParseUser.getCurrentUser().getUsername();
+    }
+    public static String getCurrentTimeStamp(){
+        SimpleDateFormat outputFmt = new SimpleDateFormat(ApplicationConstant.DATE_FORMATE);
+        outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return outputFmt.format(new Date());
+    }
+
     }

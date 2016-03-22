@@ -34,9 +34,6 @@ public class TimeLine extends ParseObject {
     public int getAudiance() {
         return getInt("audiance");
     }
-    public Comments getCommnts(){
-        return (Comments) getParseObject("Comments");
-    }
 
     public ParseFile getPostImage() {
         return getParseFile("postImage");
@@ -67,9 +64,6 @@ public class TimeLine extends ParseObject {
         put("isImageSet", isImageSet);
     }
 
-    public void setCommnts(Comments comments){
-        put("Comments",comments);
-    }
 
 
 }

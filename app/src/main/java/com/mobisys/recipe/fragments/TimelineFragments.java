@@ -46,8 +46,10 @@ import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.kbeanie.imagechooser.exceptions.ChooserException;
 import com.mobisys.recipe.R;
+import com.mobisys.recipe.adapter.CommentListAdapter;
 import com.mobisys.recipe.adapter.TimeLineAdapter;
 import com.mobisys.recipe.imageloadingutil.ImageLoader;
+import com.mobisys.recipe.model.Comments;
 import com.mobisys.recipe.model.TimeLine;
 import com.mobisys.recipe.util.ApplicationConstant;
 import com.mobisys.recipe.util.CircularImage;
@@ -67,7 +69,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by ubuntu1 on 11/3/16.
@@ -174,9 +175,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         File imgFile = new File(filePath);
 
 
-        SimpleDateFormat outputFmt = new SimpleDateFormat(ApplicationConstant.DATE_FORMATE);
-        outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String eventDate = outputFmt.format(new Date());
+
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                 .format(new Date());
@@ -189,7 +188,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
             file.saveInBackground();
             timeLine.setPostImage(file);
-            timeLine.setDateTime(eventDate);
+            timeLine.setDateTime(Utils.getCurrentTimeStamp());
             timeLine.setUserIcon(getUserImage());
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
@@ -198,7 +197,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             timeLine.setIsImageSet(true);
         } else {
             // timeLine.setPostImage(new ParseFile(""));
-            timeLine.setDateTime(eventDate);
+            timeLine.setDateTime(Utils.getCurrentTimeStamp());
             timeLine.setUserIcon(getUserImage());
             timeLine.setUserId(ParseUser.getCurrentUser().getObjectId());
             timeLine.setUserName(ParseUser.getCurrentUser().getUsername());
@@ -495,9 +494,16 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             String status = intent.getStringExtra(ApplicationConstant.FLAG);
             int audiance = intent.getIntExtra(ApplicationConstant.FLAG1, 0);
             Log.d(TAG, "Got message: " + url);
-            //showDetailPostDialog(url);
-
             setupPost(status, url, audiance);
+
+        }
+    };
+    private BroadcastReceiver mCommentDialogReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String oId = intent.getStringExtra(ApplicationConstant.FLAG);
+            Log.d(TAG, "Got message: " + oId);
+            showCommentsDialog(oId);
 
         }
     };
@@ -507,6 +513,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCreatePostMessageReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCommentDialogReceiver);
         // dismissDetailDialog();
         super.onDestroy();
     }
@@ -515,6 +522,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
     public void onPause() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCreatePostMessageReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCommentDialogReceiver);
         super.onPause();
     }
 
@@ -524,6 +532,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
                 new IntentFilter(ApplicationConstant.TIMELINE_ADAPTER));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCreatePostMessageReceiver,
                 new IntentFilter(ApplicationConstant.CREATE_POST_DIALOG_FRAGMENT));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCommentDialogReceiver,
+                new IntentFilter(ApplicationConstant.COMMENT_DIALOG_FRAGMENT));
 
         super.onResume();
     }
@@ -649,16 +659,30 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         newFragment.show(ft, "detailDialog");
     }
 
+    void showCommentsDialog(String oId) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment newFragment = CommentsDialog.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString(ApplicationConstant.FLAG, oId);
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "CommentsDialog");
+    }
 
-    public static class CommentsDialog extends DialogFragment {
 
-        private EditText editCommentBox;
+    public static class CommentsDialog extends DialogFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+
         private Button btnCancel, btnPost;
         private RecyclerView mCommentList;
         private RecyclerView.LayoutManager mLayoutManager;
+        private EditText editCommentDialog;
+        private String ObjectId = null;
+        private static CommentsDialog f;
+        private ArrayList<Comments> allComments;
+        private CommentListAdapter mAdapter;
+        private SwipeRefreshLayout mSwipeRefreshLayout;
 
-        static DetailPostDialog newInstance() {
-            DetailPostDialog f = new DetailPostDialog();
+        static CommentsDialog newInstance() {
+             f = new CommentsDialog();
             f.setStyle(DialogFragment.STYLE_NORMAL, R.style.You_Dialog);
             return f;
         }
@@ -668,11 +692,25 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
+            View v = inflater.inflate(R.layout.fragment_dialog_comments, container, false);
             Bundle bundle = this.getArguments();
-            /*url = bundle.getString(ApplicationConstant.IMAGE_URL);
-            imageView = (ImageView) v.findViewById(R.id.imgPostDialog);*/
-
+            ObjectId = bundle.getString(ApplicationConstant.FLAG);
+            mCommentList = (RecyclerView)v.findViewById(R.id.listComments);
+            mCommentList.setHasFixedSize(true);
+            mCommentList.addItemDecoration(new SpacesItemDecoration(8));
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            mCommentList.setLayoutManager(mLayoutManager);
+            allComments = new ArrayList<Comments>();
+            loadComments(ObjectId);
+            mAdapter = new CommentListAdapter(getActivity(),allComments);
+            mCommentList.setAdapter(mAdapter);
+            editCommentDialog = (EditText)v.findViewById(R.id.editCommentDialog);
+            btnCancel = (Button)v.findViewById(R.id.btnCancelCommentDialog);
+            btnPost = (Button)v.findViewById(R.id.btnPostCommentDialog);
+            mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipeRefreshLayoutDialog);
+            mSwipeRefreshLayout.setOnRefreshListener(this);
+            btnPost.setOnClickListener(this);
+            btnCancel.setOnClickListener(this);
 
             return v;
         }
@@ -688,7 +726,92 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             super.onStart();
         }
 
+
+        void saveComment(final String oId, final String Comment){
+            Comments com = new Comments();
+            com.setUserName(Utils.getUserName());
+            com.setUserId(Utils.getUserId());
+            com.setComment(Comment);
+            com.setDateTime(Utils.getCurrentTimeStamp());
+            com.setUserIcon(Utils.getUserImage());
+            com.setParent(oId);
+            com.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        editCommentDialog.setText("");
+                        loadComments(oId);
+                    }
+                }
+            });
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v ==btnPost){
+                if (editCommentDialog.getText().toString().trim().isEmpty()
+                        && editCommentDialog.getText().toString().length() == 0){
+                    Utils.showToastMessage(getActivity(),getString(R.string.error_comment_message));
+                }else {
+                    saveComment(ObjectId,editCommentDialog.getText().toString());
+                }
+            }else if (v == btnCancel){
+                try {
+                    f.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        void loadComments(String oId){
+            ParseQuery<Comments> query = ParseQuery.getQuery(Comments.class);
+            //query.setLimit(50);
+            query.whereEqualTo("parent",oId);
+            query.findInBackground(new FindCallback<Comments>() {
+                public void done(List<Comments> messages, ParseException e) {
+                    if (e == null) {
+                        allComments.clear();
+                        Collections.reverse(messages);
+                        allComments.addAll(messages);
+                        mAdapter.notifyDataSetChanged();
+                        mCommentList.invalidate();
+                    } else {
+                        Log.d("message", "Error: " + e.getMessage());
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onRefresh() {
+            loadComments(ObjectId);
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
+
+    /*void receiveAllPost() {
+        ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
+        query.setLimit(50);
+        query.findInBackground(new FindCallback<TimeLine>() {
+            public void done(List<TimeLine> messages, ParseException e) {
+                if (e == null) {
+                    allPosts.clear();
+                    Collections.reverse(messages);
+                    allPosts.addAll(messages);
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.invalidate();
+                } else {
+                    Log.d("message", "Error: " + e.getMessage());
+                }
+            }
+        });*/
+
+
+
 
 
 }
