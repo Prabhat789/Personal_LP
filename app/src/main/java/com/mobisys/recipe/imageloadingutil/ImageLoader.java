@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 public class ImageLoader {
     
     MemoryCache memoryCache=new MemoryCache();
+    private static ImageLoader instance = null;
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService; 
@@ -31,13 +32,20 @@ public class ImageLoader {
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
-    public ImageLoader(Activity context){
+    /*public ImageLoader(Activity context){
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
+    }*/
+    public static synchronized ImageLoader getInstance(Context ctx) {
+        if(instance == null) {
+            instance = new ImageLoader(ctx);
+        }
+        return instance;
     }
 
-    
-   // final int stub_id=com.idroidms.realstate.R.drawable.ic_drawable;
+
+
+    // final int stub_id=com.idroidms.realstate.R.drawable.ic_drawable;
     public void DisplayImage(String url, ImageView imageView)
     {
     	//System.out.println("Loading................");
