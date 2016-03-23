@@ -3,18 +3,17 @@ package com.mobisys.recipe.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.activity.MapsActivity;
-import com.mobisys.recipe.activity.OneToOneChatActivity;
 import com.mobisys.recipe.imageloadingutil.ImageLoader;
 import com.parse.ParseUser;
 
@@ -28,7 +27,8 @@ public class Profile extends Fragment implements View.OnClickListener {
     private ImageLoader imageLoader;
     private LinearLayout llLivesIn, llFrom;
     private TextView txtLivesIn, txtFrom;
-    private Button btnMessage;
+    //private Button btnMessage;
+    private FloatingActionButton editProfileButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,14 +40,16 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         txtFrom = (TextView)rootView.findViewById(R.id.txtFrom);
         txtLivesIn = (TextView)rootView.findViewById(R.id.txtLivesin);
-        btnMessage = (Button)rootView.findViewById(R.id.btnMessage);
+        //btnMessage = (Button)rootView.findViewById(R.id.btnMessage);
+        editProfileButton = (FloatingActionButton)rootView.findViewById(R.id.editProfileButton);
         imageLoader =  ImageLoader.getInstance(getActivity());
 
         loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),userProfileImage,getActivity());
 
         llLivesIn.setOnClickListener(this);
         llFrom.setOnClickListener(this);
-        btnMessage.setOnClickListener(this);
+       // btnMessage.setOnClickListener(this);
+        editProfileButton.setOnClickListener(this);
 
 
         return rootView;
@@ -74,9 +76,11 @@ public class Profile extends Fragment implements View.OnClickListener {
             Intent i = new Intent(getActivity(), MapsActivity.class);
             i.putExtra("DATA",txtLivesIn.getText().toString());
             startActivity(i);
-        }else if (v == btnMessage){
+        }/*else if (v == btnMessage){
             Intent i = new Intent(getActivity(), OneToOneChatActivity.class);
             startActivity(i);
+        }*/else if(v == editProfileButton){
+
         }
     }
 }

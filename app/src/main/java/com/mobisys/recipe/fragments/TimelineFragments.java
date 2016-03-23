@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kbeanie.imagechooser.api.ChooserType;
@@ -484,8 +485,10 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         @Override
         public void onReceive(Context context, Intent intent) {
             String url = intent.getStringExtra(ApplicationConstant.IMAGE_URL);
+            String name = intent.getStringExtra(ApplicationConstant.FLAG);
+            String detail = intent.getStringExtra(ApplicationConstant.FLAG1);
             Log.d(TAG, "Got message: " + url);
-            showDetailPostDialog(url);
+            showDetailPostDialog(url, name, detail);
 
         }
     };
@@ -547,6 +550,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         private LinearLayout llTopDialog, llBottomDialog;
         private Animation fadeIn, fadeOut;
         private Boolean istxtVisible = true;
+        private TextView txtDescriptionDetailDialog, txtUserNameDetailDialog;
         //private CardView cardViewDialog;
 
         //private Context context;
@@ -564,10 +568,16 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
             Bundle bundle = this.getArguments();
             url = bundle.getString(ApplicationConstant.IMAGE_URL);
+            String name = bundle.getString(ApplicationConstant.FLAG);
+            String description = bundle.getString(ApplicationConstant.FLAG1);
             imageView = (ImageView) v.findViewById(R.id.imgPostDialog);
 
             llTopDialog = (LinearLayout) v.findViewById(R.id.llTopDialog);
             llBottomDialog = (LinearLayout) v.findViewById(R.id.llBottomDialog);
+            txtDescriptionDetailDialog = (TextView)v.findViewById(R.id.txtDescriptionDetailDialog);
+            txtUserNameDetailDialog = (TextView)v.findViewById(R.id.txtUserNameDetailDialog);
+            txtDescriptionDetailDialog.setText(description);
+            txtUserNameDetailDialog.setText(name);
             //cardViewDialog = (CardView)v.findViewById(R.id.card_viewDialog);
 
             fadeIn = new AlphaAnimation(0, 1);
@@ -652,11 +662,13 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         }
     }
 
-    void showDetailPostDialog(String url) {
+    void showDetailPostDialog(String url, String name, String detail) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         DialogFragment newFragment = DetailPostDialog.newInstance();
         Bundle bundle = new Bundle();
         bundle.putString(ApplicationConstant.IMAGE_URL, url);
+        bundle.putString(ApplicationConstant.FLAG, name);
+        bundle.putString(ApplicationConstant.FLAG1, detail);
         newFragment.setArguments(bundle);
         newFragment.show(ft, "detailDialog");
     }
@@ -812,27 +824,6 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
         }
 
     }
-
-    /*void receiveAllPost() {
-        ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
-        query.setLimit(50);
-        query.findInBackground(new FindCallback<TimeLine>() {
-            public void done(List<TimeLine> messages, ParseException e) {
-                if (e == null) {
-                    allPosts.clear();
-                    Collections.reverse(messages);
-                    allPosts.addAll(messages);
-                    mAdapter.notifyDataSetChanged();
-                    mRecyclerView.invalidate();
-                } else {
-                    Log.d("message", "Error: " + e.getMessage());
-                }
-            }
-        });*/
-
-
-
-
 
 
 

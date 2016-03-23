@@ -25,13 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical">
-                <TextView
+                <com.mobisys.recipe.widgets.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Prabhat Tiwari"
                     android:textColor="@color/black"
                     android:layout_marginLeft="5dp"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/medium_text"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:maxLength="55"
@@ -78,7 +78,7 @@
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/editProfileButton"
                     android:layout_marginRight="8dp"
                     android:src="@drawable/ic_profile_edit"
                     android:padding="10dp"
@@ -118,7 +118,7 @@
                     android:layout_margin="5dp"
                     android:clickable="true"
                     android:orientation="horizontal">
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -129,7 +129,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/smoke_white" />
 
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
@@ -154,7 +154,7 @@
                     android:clickable="true"
                     android:id="@+id/llLivesIn"
                     android:orientation="horizontal">
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -165,7 +165,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/smoke_white" />
 
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
@@ -191,7 +191,7 @@
                     android:clickable="true"
                     android:id="@+id/llFrom"
                     android:orientation="horizontal">
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -202,7 +202,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/smoke_white" />
 
-                    <TextView
+                    <com.mobisys.recipe.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
@@ -220,7 +220,7 @@
         </android.support.v7.widget.CardView>
 
 
-        <com.mobisys.recipe.widgets.CustomButton
+       <!-- <com.mobisys.recipe.widgets.CustomButton
             android:layout_width="239dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
@@ -232,7 +232,7 @@
             android:elevation="5dp"
             android:textSize="@dimen/medium_text"
             android:textColor="@color/white"
-            android:background="@drawable/btn_rounded_corner_parse_green"/>
+            android:background="@drawable/btn_rounded_corner_parse_green"/>-->
     </LinearLayout>
 
     </ScrollView>

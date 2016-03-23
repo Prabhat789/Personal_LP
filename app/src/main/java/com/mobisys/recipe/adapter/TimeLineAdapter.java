@@ -77,7 +77,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.txtUsername.setText(mDataset.get(position).getUserName());
         //Log.e(TAG,mDataset.get(position).getDateTime());
         holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
-        holder.btnComments.setText(" "+mDataset.get(position).getCommentCount());
+        holder.btnComments.setText("   "+mDataset.get(position).getCommentCount()+" Comments");
         setAudIcon(holder.audIcom, mDataset.get(position).getAudiance());
         loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
         /*String url = null;
@@ -109,7 +109,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             @Override
             public void onClick(View v) {
                 if (mDataset.get(position).getIsImageSet()){
-                    sendMessage(mDataset.get(position).getPostImage().getUrl());
+                    sendMessage(mDataset.get(position).getPostImage().getUrl(),
+                            mDataset.get(position).getUserName(),
+                            mDataset.get(position).getBodyText());
                 }
 
             }
@@ -140,10 +142,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
 
     }
 
-    private void sendMessage( String url) {
+    private void sendMessage( String url, String name, String detail) {
         Log.d(TAG, "Broadcasting message");
         Intent intent = new Intent(ApplicationConstant.TIMELINE_ADAPTER);
         intent.putExtra(ApplicationConstant.IMAGE_URL, url);
+        intent.putExtra(ApplicationConstant.FLAG, name);
+        intent.putExtra(ApplicationConstant.FLAG1, detail);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
