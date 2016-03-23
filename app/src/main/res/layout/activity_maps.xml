@@ -16,14 +16,20 @@
             android:layout_height="match_parent"
             tools:context=".activity.MapsActivity" />
 
-        <TextView
-            android:layout_width="250dp"
+        <com.mobisys.recipe.widgets.CustomTextLite
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:background="@color/trans_black"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/trans_blue"
             android:layout_centerHorizontal="true"
             android:id="@+id/txtAddress"
-            android:layout_above="@+id/btnSaveLocation"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="Prabhat Tiwari"
+            android:textColor="@color/white"
+            android:textSize="@dimen/small_text"
             android:layout_marginBottom="15dp"/>
 
         <com.mobisys.recipe.widgets.CustomButton
@@ -34,6 +40,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
+            android:textSize="@dimen/medium_text"
             android:id="@+id/btnSaveLocation"
             android:textColor="@color/white"/>
     </RelativeLayout>

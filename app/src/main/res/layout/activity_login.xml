@@ -116,7 +116,7 @@
             android:textAllCaps="false"
             android:id="@+id/btnForgotPassword"
             android:layout_marginBottom="20dp"
-            android:textSize="@dimen/medium_larg_text"
+            android:textSize="@dimen/medium_text"
             android:background="@android:color/transparent"
             android:textColor="@color/white"
             android:layout_alignParentBottom="true"

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.mobisys.recipe.R;
 import com.mobisys.recipe.activity.MapsActivity;
 import com.mobisys.recipe.imageloadingutil.ImageLoader;
+import com.mobisys.recipe.util.ApplicationConstant;
 import com.parse.ParseUser;
 
 /**
@@ -70,11 +71,13 @@ public class Profile extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v == llFrom){
             Intent i = new Intent(getActivity(), MapsActivity.class);
-            i.putExtra("DATA",txtFrom.getText().toString());
+            i.putExtra(ApplicationConstant.LATITUDE,"0.00");
+            i.putExtra(ApplicationConstant.LONGITUDE,"0.00");
             startActivity(i);
         }else if (v == llLivesIn){
             Intent i = new Intent(getActivity(), MapsActivity.class);
-            i.putExtra("DATA",txtLivesIn.getText().toString());
+            i.putExtra(ApplicationConstant.LATITUDE,"0.00");
+            i.putExtra(ApplicationConstant.LONGITUDE,"0.00");
             startActivity(i);
         }/*else if (v == btnMessage){
             Intent i = new Intent(getActivity(), OneToOneChatActivity.class);

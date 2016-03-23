@@ -9,6 +9,7 @@ public class ApplicationConstant {
     public static final String BUTTON_FONT_NAME = "alighty.ttf";
     public static final String EDIT_TEXT_FONT_NAME = "alighty.ttf";*/
     public static final String TEXT_FONT_NAME = "HelveticaNeue_regular.ttf";
+    public static final String TEXT_FONT_NAME_LITE = "HelveticaNeue-Light.otf";
     public static final String BUTTON_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String EDIT_TEXT_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String LOGIN_PREFERENCE = "loginPrefs";
@@ -23,6 +24,7 @@ public class ApplicationConstant {
     public static final String FLAG1 = "data_flag1";
     public static final String IMAGE_URL = "image_url";
     public static final String DATE_FORMATE = "dd-MM-yyyy HH:mm:ss";
-
+    public static final String LATITUDE = "LATITUDE";
+    public static final String LONGITUDE = "LONGITUDE";
 
 }

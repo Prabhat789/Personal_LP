@@ -388,6 +388,15 @@ public class Utils {
     public static String getUserImage(){
         return  ParseUser.getCurrentUser().getString("profileImage");
     }
+    public static String getLivesIn(){
+        return ParseUser.getCurrentUser().getString("livesIn");
+    }
+    public static String getFromLocation(){
+        return ParseUser.getCurrentUser().getString("fromLocation");
+    }
+    public static String getUserFullName(){
+        return ParseUser.getCurrentUser().getString("userFullName");
+    }
     public static String getUserId(){
         return ParseUser.getCurrentUser().getObjectId();
     }
@@ -399,5 +408,7 @@ public class Utils {
         outputFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
         return outputFmt.format(new Date());
     }
+
+
 
     }
