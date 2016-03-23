@@ -29,6 +29,9 @@ public class TimeLine extends ParseObject {
     public boolean getIsImageSet() {
         return getBoolean("isImageSet");
     }
+    public int getCommentCount() {
+        return getInt("commentCount");
+    }
 
 
     public int getAudiance() {
@@ -62,6 +65,9 @@ public class TimeLine extends ParseObject {
 
     public void setIsImageSet(boolean isImageSet) {
         put("isImageSet", isImageSet);
+    }
+    public void setCommentCount(int commentCount) {
+        put("commentCount", commentCount);
     }
 
 

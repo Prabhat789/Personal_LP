@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,10 +34,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
 
-        TextView txtBody, txtUsername, txtTimeAgo;
+        TextView txtBody, txtUsername, txtTimeAgo,btnComments;
         ImageView imagePost, audIcom;
         CircularImage userIcon;
-        Button btnComments;
         CardView card_view;
 
 
@@ -49,7 +47,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
             txtTimeAgo = (TextView)itemView.findViewById(R.id.dateText);
             userIcon = (CircularImage)itemView.findViewById(R.id.imgUser);
             txtUsername = (TextView)itemView.findViewById(R.id.txtUsername);
-            btnComments = (Button)itemView.findViewById(R.id.btnComments);
+            btnComments = (TextView)itemView.findViewById(R.id.btnComments);
             card_view = (CardView)itemView.findViewById(R.id.card_view);
             audIcom = (ImageView)itemView.findViewById(R.id.audianceIcon);
 
@@ -79,6 +77,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.DataOb
         holder.txtUsername.setText(mDataset.get(position).getUserName());
         //Log.e(TAG,mDataset.get(position).getDateTime());
         holder.txtTimeAgo.setText(utils.getTimeDiffrence(mContext, utils.formatDate(mDataset.get(position).getDateTime())));
+        holder.btnComments.setText(" "+mDataset.get(position).getCommentCount());
         setAudIcon(holder.audIcom, mDataset.get(position).getAudiance());
         loadUserIcon(mDataset.get(position).getUserIcon(), holder.userIcon, mContext);
         /*String url = null;

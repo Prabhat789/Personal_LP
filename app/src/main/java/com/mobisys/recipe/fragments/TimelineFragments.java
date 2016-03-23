@@ -195,6 +195,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             timeLine.setBodyText(status);
             timeLine.setAudiance(audiance);
             timeLine.setIsImageSet(true);
+            timeLine.setCommentCount(0);
         } else {
             // timeLine.setPostImage(new ParseFile(""));
             timeLine.setDateTime(Utils.getCurrentTimeStamp());
@@ -204,6 +205,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             timeLine.setBodyText(status);
             timeLine.setAudiance(audiance);
             timeLine.setIsImageSet(false);
+            timeLine.setCommentCount(0);
         }
         timeLine.saveInBackground(new SaveCallback() {
             @Override
@@ -741,6 +743,7 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
                     if (e == null) {
                         editCommentDialog.setText("");
                         loadComments(oId);
+                        updateCommentCount(ObjectId);
                     }
                 }
             });
@@ -791,6 +794,23 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
             loadComments(ObjectId);
             mSwipeRefreshLayout.setRefreshing(false);
         }
+
+        public void updateCommentCount(String oId){
+            ParseQuery<TimeLine> query = ParseQuery.getQuery(TimeLine.class);
+            query.whereEqualTo("objectId", oId);
+            query.findInBackground(new FindCallback<TimeLine>() {
+                public void done(List<TimeLine> messages, ParseException e) {
+                    if (e == null) {
+                        TimeLine line = messages.get(0);
+                        line.put("commentCount", line.getCommentCount() + 1);
+                        line.saveEventually();
+                    } else {
+                        Log.d("message", "Error: " + e.getMessage());
+                    }
+                }
+            });
+        }
+
     }
 
     /*void receiveAllPost() {
@@ -809,6 +829,8 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });*/
+
+
 
 
 
