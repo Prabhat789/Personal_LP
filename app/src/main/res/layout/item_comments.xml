@@ -5,85 +5,86 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:elevation="5dp"
     android:clickable="true"
+    android:elevation="5dp"
     android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="1">
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.18"
             android:gravity="top|left"
-            android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.mobisys.recipe.util.CircularImage
+
+            <com.mobisys.aspr.util.CircularImage
+                android:id="@+id/imgUser"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:scaleType="centerCrop"
-                android:id="@+id/imgUser"
                 android:elevation="4dp"
+                android:scaleType="centerCrop"
                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.82"
             android:gravity="center_vertical|left"
             android:orientation="vertical"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:layout_height="match_parent">
+            android:paddingTop="8dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="15dp"
-                android:weightSum="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="1">
                 <TextView
+                    android:id="@+id/txtCommentUser"
                     android:layout_width="0dp"
-                    android:layout_weight="0.60"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:singleLine="true"
                     android:text="Prabhat Tiwari"
                     android:textColor="@color/black"
-                    android:id="@+id/txtCommentUser"
-                    android:singleLine="true"
                     android:textSize="@dimen/small_text"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="0.40"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/light_smoke_white"
-                    android:gravity="right|center_vertical"
                     android:id="@+id/txtCommentDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:gravity="right|center_vertical"
                     android:singleLine="true"
+                    android:textColor="@color/light_smoke_white"
                     android:textSize="@dimen/very_very_small"/>
             </LinearLayout>
 
 
 
             <TextView
+                android:id="@+id/txtCommentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/very_small"
-                android:id="@+id/txtCommentText"
-                android:elevation="4dp"
-                android:layout_marginTop="4dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:elevation="4dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/btn_rounded_corner_white"/>
+                android:textSize="@dimen/very_small" />
 
 
         </LinearLayout>

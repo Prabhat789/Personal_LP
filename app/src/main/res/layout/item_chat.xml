@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <com.mobisys.recipe.util.CircularImage
+    <com.mobisys.aspr.util.CircularImage
         android:id="@+id/ivProfileLeft"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -13,38 +14,39 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:textSize="18sp"
             android:id="@+id/tvBody"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginRight="64dp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="64dp"
+            android:background="@drawable/btn_rounded_corner_white"
+            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:background="@drawable/btn_rounded_corner_white"
-            android:layout_height="wrap_content">
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp">
 
         </TextView>
         <TextView
-            android:textSize="13sp"
             android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="64dp"
+            android:paddingBottom="2dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingBottom="2dp"
-            android:visibility="gone"
-            android:layout_marginRight="64dp"
-            android:layout_width="match_parent"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:visibility="gone"
             >
         </TextView>
     </LinearLayout>
-    <com.mobisys.recipe.util.CircularImage
+
+    <com.mobisys.aspr.util.CircularImage
         android:id="@+id/ivProfileRight"
-        android:layout_marginLeft="-64dp"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginLeft="-64dp" />
 
 </LinearLayout>

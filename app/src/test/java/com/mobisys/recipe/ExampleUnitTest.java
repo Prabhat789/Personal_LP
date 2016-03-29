@@ -1,4 +1,4 @@
-package com.mobisys.recipe;
+package com.mobisys.aspr;
 
 import org.junit.Test;
 

@@ -4,17 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    android:paddingLeft="3dp"
-    android:paddingRight="3dp"
+    android:orientation="vertical"
     android:paddingBottom="3dp"
-    android:orientation="vertical">
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_viewDialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         card_view:cardCornerRadius="2dp">
 
 
@@ -27,8 +27,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/parse_title"
-                android:layout_weight="0.08">
+                android:layout_weight="0.08"
+                android:background="@color/parse_title">
 
             </LinearLayout>
             <LinearLayout
@@ -41,72 +41,73 @@
                     android:layout_height="match_parent">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/listComments"
-                        android:scrollbars="vertical"
-                        android:layout_marginTop="6dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="6dp"
+                        android:scrollbars="vertical" />
                 </android.support.v4.widget.SwipeRefreshLayout>
 
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="0.27"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_weight="0.27"
+                android:orientation="vertical"
                 android:weightSum="1">
                 
                 <EditText
+                    android:id="@+id/editCommentDialog"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:id="@+id/editCommentDialog"
-                    android:hint="Comment "
-                    android:gravity="start"
-                    android:maxLines="5"
-                    android:inputType="textShortMessage"
-                    android:textSize="@dimen/small_text"
-                    android:textColor="@color/smoke_white"
+                    android:layout_weight="0.55"
                     android:background="@drawable/edit_trans_square_smoke_white"
-                    android:layout_weight="0.55"/>
+                    android:gravity="start"
+                    android:hint="Comment "
+                    android:inputType="textShortMessage"
+                    android:maxLines="5"
+                    android:textColor="@color/smoke_white"
+                    android:textSize="@dimen/small_text" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/dark_grey"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:background="@color/dark_grey" />
                 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:orientation="horizontal"
+                    android:layout_weight="0.45"
                     android:gravity="center_vertical"
-                    android:layout_weight="0.45">
-                    
-                    <com.mobisys.recipe.widgets.CustomButton
-                        android:layout_width="0dp"
-                        android:layout_weight="0.50"
-                        android:layout_height="40dp"
-                        android:text="Cancel"
-                        android:elevation="4dp"
-                        android:textAllCaps="true"
-                        android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+
+                    <com.mobisys.aspr.widgets.CustomButton
                         android:id="@+id/btnCancelCommentDialog"
-                        android:background="@drawable/btn_rounded_corner_parse_green"
-                        android:textSize="@dimen/small_text"
-                        android:textColor="@color/white"/>
-                    <com.mobisys.recipe.widgets.CustomButton
                         android:layout_width="0dp"
-                        android:layout_weight="0.50"
                         android:layout_height="40dp"
-                        android:text="Post"
-                        android:elevation="4dp"
-                        android:id="@+id/btnPostCommentDialog"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="0.50"
                         android:background="@drawable/btn_rounded_corner_parse_green"
-                        android:layout_marginLeft="5dp"
+                        android:elevation="4dp"
+                        android:text="Cancel"
                         android:textAllCaps="true"
-                        android:textSize="@dimen/small_text"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
+
+                    <com.mobisys.aspr.widgets.CustomButton
+                        android:id="@+id/btnPostCommentDialog"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="0.50"
+                        android:background="@drawable/btn_rounded_corner_parse_green"
+                        android:elevation="4dp"
+                        android:text="Post"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
                     
                 </LinearLayout>
 

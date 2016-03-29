@@ -1,110 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/application_background">
+    android:background="@drawable/application_background"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
 
-
-            <com.mobisys.recipe.widgets.CustomEditText
-                android:textSize="@dimen/medium_text"
-                android:textColor="@color/black"
-                android:background="@drawable/btn_rounded_corner_white"
+            <com.mobisys.aspr.widgets.CustomEditText
+                android:id="@+id/editName"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
-                android:id="@+id/editName"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Name"
+                android:inputType="textEmailAddress"
                 android:maxLength="25"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:inputType="textEmailAddress"
-                android:hint="Name"/>
-
-
-
-            <com.mobisys.recipe.widgets.CustomEditText
-                android:textSize="@dimen/medium_text"
-                android:textColorHint="@color/smoke_white"
                 android:textColor="@color/black"
-                android:background="@drawable/btn_rounded_corner_white"
+                android:textSize="@dimen/medium_text" />
+
+
+            <com.mobisys.aspr.widgets.CustomEditText
+                android:id="@+id/editEmail"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
-                android:id="@+id/editEmail"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:maxLength="40"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:hint="Email"/>
-
-
-            <com.mobisys.recipe.widgets.CustomEditText
-                android:textSize="@dimen/medium_text"
-                android:textColorHint="@color/smoke_white"
                 android:textColor="@color/black"
-                android:background="@drawable/btn_rounded_corner_white"
+                android:textColorHint="@color/smoke_white"
+                android:textSize="@dimen/medium_text" />
+
+
+            <com.mobisys.aspr.widgets.CustomEditText
+                android:id="@+id/editMobile"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
-                android:id="@+id/editMobile"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Mobile Number"
                 android:inputType="phone"
                 android:maxLength="12"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:layout_marginTop="15dp"
-                android:hint="Mobile Number"/>
-
-
-
-            <com.mobisys.recipe.widgets.CustomEditText
-                android:textSize="@dimen/medium_text"
-                android:textColorHint="@color/smoke_white"
                 android:textColor="@color/black"
-                android:background="@drawable/btn_rounded_corner_white"
-                android:layout_width="239dp"
-                android:layout_height="40dp"
+                android:textColorHint="@color/smoke_white"
+                android:textSize="@dimen/medium_text" />
+
+
+            <com.mobisys.aspr.widgets.CustomEditText
                 android:id="@+id/editPassword"
-                android:inputType="textPassword"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:layout_marginTop="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:hint="Password"/>
-
-
-
-            <com.mobisys.recipe.widgets.CustomEditText
-                android:textSize="@dimen/medium_text"
-                android:textColorHint="@color/smoke_white"
-                android:textColor="@color/black"
-                android:background="@drawable/btn_rounded_corner_white"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
-                android:id="@+id/editPasswordConfirm"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/smoke_white"
+                android:textSize="@dimen/medium_text" />
+
+
+            <com.mobisys.aspr.widgets.CustomEditText
+                android:id="@+id/editPasswordConfirm"
+                android:layout_width="239dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="15dp"
-                android:hint="Confirm Password"/>
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/smoke_white"
+                android:textSize="@dimen/medium_text" />
 
 
             <!-- <View
@@ -114,20 +111,19 @@
                  android:background="@color/smoke_white"/>-->
 
 
-
-            <com.mobisys.recipe.widgets.CustomButton
+            <com.mobisys.aspr.widgets.CustomButton
+                android:id="@+id/btnConfirm"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_rounded_corner_parse_green"
                 android:elevation="5dp"
                 android:text="Confirm"
-                android:layout_weight="1"
-                android:layout_marginTop="20dp"
                 android:textAllCaps="true"
-                android:textSize="@dimen/medium_text"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:background="@drawable/btn_rounded_corner_parse_green"
-                android:id="@+id/btnConfirm"/>
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

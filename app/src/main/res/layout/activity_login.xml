@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/application_background">
+    android:background="@drawable/application_background"
+    android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/LoginContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:id="@+id/LoginContainer"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llemailpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
             android:layout_marginTop="150dp"
-            android:id="@+id/llemailpassword"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <!--<android.support.design.widget.TextInputLayout
                 android:id="@+id/usernameWrapper"
                 android:layout_width="239dp"
                 android:layout_height="wrap_content">-->
 
-            <com.mobisys.recipe.widgets.CustomEditText
+            <com.mobisys.aspr.widgets.CustomEditText
                 android:id="@+id/editUsername"
+                android:layout_width="239dp"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Username"
+                android:inputType="textEmailAddress"
                 android:maxLength="40"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:background="@drawable/btn_rounded_corner_white"
-                android:layout_width="239dp"
-                android:layout_height="40dp"
-                android:inputType="textEmailAddress"
-                android:hint="Username"/>
+                android:paddingRight="15dp" />
 
             <!-- </android.support.design.widget.TextInputLayout>-->
             <!--<android.support.design.widget.TextInputLayout
@@ -45,18 +46,18 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">-->
 
-            <com.mobisys.recipe.widgets.CustomEditText
+            <com.mobisys.aspr.widgets.CustomEditText
                 android:id="@+id/editPassword"
                 android:layout_width="239dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:maxLines="1"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/btn_rounded_corner_white"
-                android:hint="Password"/>
+                android:paddingRight="15dp" />
 
             <!--</android.support.design.widget.TextInputLayout>-->
 
@@ -69,58 +70,58 @@
 
         </LinearLayout>
         <CheckBox
+            android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  Save Password"
-            android:textColor="@color/white"
-            android:id="@+id/checkBox"
-            android:button="@drawable/checkbox_selector"
+            android:layout_alignStart="@+id/btnForgotPassword"
             android:layout_below="@+id/llemailpassword"
-            android:layout_alignStart="@+id/btnForgotPassword" />
+            android:button="@drawable/checkbox_selector"
+            android:text="  Save Password"
+            android:textColor="@color/white" />
 
 
-
-        <com.mobisys.recipe.widgets.CustomButton
+        <com.mobisys.aspr.widgets.CustomButton
+            android:id="@+id/btnLogin"
             android:layout_width="239dp"
             android:layout_height="40dp"
+            android:layout_alignStart="@+id/checkBox"
+            android:layout_below="@+id/checkBox"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rounded_corner_parse_green"
             android:elevation="5dp"
             android:text="Login"
-            android:layout_weight="1"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:background="@drawable/btn_rounded_corner_parse_green"
-            android:id="@+id/btnLogin"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:layout_below="@+id/checkBox"
-            android:layout_alignStart="@+id/checkBox" />
-        <com.mobisys.recipe.widgets.CustomButton
+            android:textStyle="bold" />
+
+        <com.mobisys.aspr.widgets.CustomButton
+            android:id="@+id/btnRegister"
             android:layout_width="239dp"
             android:layout_height="40dp"
+            android:layout_alignStart="@+id/btnLogin"
+            android:layout_below="@+id/btnLogin"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rounded_corner_parse_green"
             android:elevation="5dp"
             android:text="Register"
-            android:layout_weight="1"
             android:textAllCaps="true"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
             android:textColor="@color/white"
-            android:background="@drawable/btn_rounded_corner_parse_green"
-            android:id="@+id/btnRegister"
-            android:layout_below="@+id/btnLogin"
-            android:layout_alignStart="@+id/btnLogin" />
+            android:textStyle="bold" />
 
-        <com.mobisys.recipe.widgets.CustomButton
+        <com.mobisys.aspr.widgets.CustomButton
+            android:id="@+id/btnForgotPassword"
             android:layout_width="239dp"
             android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
             android:text="@string/f_password"
             android:textAllCaps="false"
-            android:id="@+id/btnForgotPassword"
-            android:layout_marginBottom="20dp"
-            android:textSize="@dimen/medium_text"
-            android:background="@android:color/transparent"
             android:textColor="@color/white"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:textSize="@dimen/medium_text" />
     </RelativeLayout>
 
 </LinearLayout>

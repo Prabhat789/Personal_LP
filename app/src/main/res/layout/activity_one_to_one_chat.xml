@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     
     <include layout="@layout/toolbat_center_title"/>
     
@@ -10,51 +11,51 @@
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/cardList"
-            android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:layout_above="@+id/llSend"
-            android:layout_height="match_parent"/>/>
+            android:layout_alignParentTop="true"
+            android:scrollbars="vertical" />/>
         <RelativeLayout
             android:id="@+id/llSend"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/parse_title"
-            android:paddingTop="5dp"
             android:paddingBottom="10dp"
             android:paddingLeft="0dp"
             android:paddingRight="5dp"
-            android:layout_height="wrap_content" >
+            android:paddingTop="5dp">
             <EditText
                 android:id="@+id/etMessage"
-                android:layout_toLeftOf="@+id/btSend"
-                android:layout_alignBottom="@+id/btSend"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:gravity="clip_vertical|left"
+                android:layout_alignBottom="@+id/btSend"
                 android:layout_marginRight="5dp"
-                android:textColor="@color/black"
+                android:layout_toLeftOf="@+id/btSend"
+                android:background="@drawable/btn_rounded_corner_white"
+                android:gravity="clip_vertical|left"
+                android:hint="Message"
+                android:inputType="textShortMessage"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:background="@drawable/btn_rounded_corner_white"
-                android:hint="Message"
+                android:textColor="@color/black"
                 android:textColorHint="@color/smoke_white"
-                android:inputType="textShortMessage"
                 />
-            <com.mobisys.recipe.widgets.CustomButton
+
+            <com.mobisys.aspr.widgets.CustomButton
                 android:id="@+id/btSend"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/btn_rounded_corner_parse_green"
                 android:gravity="center"
                 android:paddingRight="10dp"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:background="@drawable/btn_rounded_corner_parse_green"
-                android:layout_alignParentRight="true"
                 android:text="Send"
-                android:textSize="18sp" >
-            </com.mobisys.recipe.widgets.CustomButton>
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"></com.mobisys.aspr.widgets.CustomButton>
         </RelativeLayout>
     </RelativeLayout>
 

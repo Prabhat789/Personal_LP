@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="5dp">
     <ScrollView
         android:layout_width="match_parent"
@@ -15,38 +16,39 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:padding="5dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:elevation="5dp"
             android:clickable="true"
+            android:elevation="5dp"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="5dp"
             card_view:cardCornerRadius="4dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical">
-                <com.mobisys.recipe.widgets.CustomTextView
+
+                <com.mobisys.aspr.widgets.CustomTextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prabhat Tiwari"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="@dimen/medium_text"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
                     android:maxLength="55"
                     android:singleLine="true"
-                    android:id="@+id/textView" />
+                    android:text="Prabhat Tiwari"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
 
                 <CheckBox
+                    android:id="@+id/checkBox3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Offline  "
-                    android:button="@null"
-                    android:drawableRight="@drawable/checkbox_available_status"
-                    android:id="@+id/checkBox3"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/checkbox_available_status"
+                    android:text="Offline  "
                      />
             </RelativeLayout>
 
@@ -54,38 +56,38 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:layout_marginTop="8dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:elevation="5dp"
             android:clickable="true"
+            android:elevation="5dp"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="5dp"
             card_view:cardCornerRadius="4dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:padding="5dp"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:padding="5dp">
 
                 <ImageView
+                    android:id="@+id/userProfileImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:id="@+id/userProfileImage"
                     />
 
                 <android.support.design.widget.FloatingActionButton
                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/editProfileButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editProfileButton"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/ic_profile_edit"
-                    android:padding="10dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_profile_edit"
                     app:backgroundTint="@color/red"
                     app:borderWidth="3dp"
                     app:elevation="6dp"
@@ -99,12 +101,12 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:layout_marginTop="8dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:elevation="5dp"
             android:clickable="true"
+            android:elevation="5dp"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="5dp"
             card_view:cardCornerRadius="4dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,105 +116,108 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_margin="5dp"
                     android:clickable="true"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
-                    <com.mobisys.recipe.widgets.CustomTextView
+
+                    <com.mobisys.aspr.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:padding="5dp"
-                        android:text="Email"
-                        android:textSize="16dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/smoke_white" />
+                        android:text="Email"
+                        android:textColor="@color/smoke_white"
+                        android:textSize="16dp" />
 
-                    <com.mobisys.recipe.widgets.CustomTextView
+                    <com.mobisys.aspr.widgets.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:padding="5dp"
+                        android:layout_marginLeft="10dp"
                         android:background="@android:color/transparent"
-                        android:text="prabhat.kumar.ec@gmail.com"
                         android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="prabhat.kumar.ec@gmail.com"
                         android:textColor="@color/black"
-                        android:layout_marginLeft="10dp"/>
+                        android:textSize="16dp" />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.4dp"
-                    android:background="@color/smoke_white"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"/>
+                    android:background="@color/smoke_white" />
                 <LinearLayout
+                    android:id="@+id/llLivesIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_margin="5dp"
                     android:clickable="true"
-                    android:id="@+id/llLivesIn"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
-                    <com.mobisys.recipe.widgets.CustomTextView
+
+                    <com.mobisys.aspr.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:padding="5dp"
-                        android:text="Lives in"
-                        android:textSize="16dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/smoke_white" />
+                        android:text="Lives in"
+                        android:textColor="@color/smoke_white"
+                        android:textSize="16dp" />
 
-                    <com.mobisys.recipe.widgets.CustomTextView
+                    <com.mobisys.aspr.widgets.CustomTextView
+                        android:id="@+id/txtLivesin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:padding="5dp"
-                        android:id="@+id/txtLivesin"
+                        android:layout_marginLeft="10dp"
                         android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
                         android:text="Pune, India"
                         android:textColor="@color/black"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"/>
+                        android:textSize="16dp" />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.4dp"
-                    android:background="@color/smoke_white"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"/>
+                    android:background="@color/smoke_white" />
                 <LinearLayout
+                    android:id="@+id/llFrom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_margin="5dp"
                     android:clickable="true"
-                    android:id="@+id/llFrom"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
-                    <com.mobisys.recipe.widgets.CustomTextView
+
+                    <com.mobisys.aspr.widgets.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:padding="5dp"
-                        android:text="From"
-                        android:textSize="16dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/smoke_white" />
+                        android:text="From"
+                        android:textColor="@color/smoke_white"
+                        android:textSize="16dp" />
 
-                    <com.mobisys.recipe.widgets.CustomTextView
+                    <com.mobisys.aspr.widgets.CustomTextView
+                        android:id="@+id/txtFrom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:padding="5dp"
-                        android:id="@+id/txtFrom"
+                        android:layout_marginLeft="10dp"
                         android:background="@android:color/transparent"
-                        android:text="Chhatarpur, India"
                         android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="Chhatarpur, India"
                         android:textColor="@color/black"
-                        android:layout_marginLeft="10dp"/>
+                        android:textSize="16dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -220,19 +225,19 @@
         </android.support.v7.widget.CardView>
 
 
-       <!-- <com.mobisys.recipe.widgets.CustomButton
-            android:layout_width="239dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Messages"
-            android:id="@+id/btnMessage"
-            android:textAllCaps="false"
-            android:elevation="5dp"
-            android:textSize="@dimen/medium_text"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_rounded_corner_parse_green"/>-->
+        <!-- <CustomButton
+             android:layout_width="239dp"
+             android:layout_height="40dp"
+             android:layout_marginTop="20dp"
+             android:layout_marginBottom="20dp"
+             android:layout_gravity="center_horizontal"
+             android:text="Messages"
+             android:id="@+id/btnMessage"
+             android:textAllCaps="false"
+             android:elevation="5dp"
+             android:textSize="@dimen/medium_text"
+             android:textColor="@color/white"
+             android:background="@drawable/btn_rounded_corner_parse_green"/>-->
     </LinearLayout>
 
     </ScrollView>
