@@ -142,6 +142,10 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/parse_client_key" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9a1a304fa31cda48ebb3611515ab5cdade784704" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

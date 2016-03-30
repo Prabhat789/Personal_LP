@@ -10,6 +10,7 @@ public class ApplicationConstant {
     public static final String EDIT_TEXT_FONT_NAME = "alighty.ttf";*/
     public static final String TEXT_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String TEXT_FONT_NAME_LITE = "HelveticaNeue-Light.otf";
+    public static final String TEXT_FONT_NAME_BOLD = "HelveticaNeue-Bold.otf";
     public static final String BUTTON_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String EDIT_TEXT_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String FONT_AWESOME = "fontawesome-webfont.ttf";
@@ -19,6 +20,7 @@ public class ApplicationConstant {
     public static final String PASSWORD = "password";
     public static final String FRIEND_LIST_ADAPTER = "friend_list_adapter";
     public static final String TIMELINE_ADAPTER = "timeline_adapter";
+    public static final String REGISTRATION_FRAGMENT_ONE = "registration_fragment_one";
     public static final String CREATE_POST_DIALOG_FRAGMENT = "create_post_dialog_fragment";
     public static final String COMMENT_DIALOG_FRAGMENT = "comment_dialog_fragment";
     public static final String FLAG = "data_flag";

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <com.mobisys.aspr.widgets.CustomButton
+            android:layout_width="239dp"
+            android:layout_height="40dp"
+            android:elevation="4dp"
+            android:background="@drawable/btn_rounded_corner_parse_green"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textSize="@dimen/medium_text"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/editUsernameReg"
+            android:layout_alignEnd="@+id/editUsernameReg"
+            android:layout_marginBottom="80dp"
+            android:id="@+id/btnNextReg" />
+
+        <com.mobisys.aspr.widgets.CustomEditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_rounded_corner_white"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:maxLength="55"
+            android:maxLines="1"
+            android:layout_marginTop="20dp"
+            android:elevation="4dp"
+            android:paddingLeft="15dp"
+            android:shadowColor="@color/white"
+            android:paddingRight="15dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_text"
+            android:layout_gravity="center"
+            android:layout_below="@+id/editEmailReg"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/editUsernameReg" />
+
+        <com.mobisys.aspr.widgets.CustomEditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_rounded_corner_white"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLength="55"
+            android:maxLines="1"
+            android:elevation="4dp"
+            android:paddingLeft="15dp"
+            android:shadowColor="@color/white"
+            android:paddingRight="15dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_text"
+            android:layout_gravity="center_horizontal|top"
+            android:id="@+id/editEmailReg"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/btnNextReg"
+            android:layout_alignStart="@+id/btnNextReg"
+            android:layout_marginTop="31dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

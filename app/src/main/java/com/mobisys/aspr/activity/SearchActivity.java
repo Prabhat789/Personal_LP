@@ -108,9 +108,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     void receiveAllUsers(String q){
-        //ParseQuery<ParseUser> query = ParseUser.getQuery(ParseUser.class);
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-       // query.whereMatches("username",q);
         query.setLimit(70);
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> messages, ParseException e) {

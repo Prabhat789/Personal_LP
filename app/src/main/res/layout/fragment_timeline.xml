@@ -37,7 +37,10 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white"
         app:layout_anchor="@id/listHighway1"
-        app:layout_anchorGravity="bottom|left|start"
+        app:layout_anchorGravity="bottom|right|end"
+        app:backgroundTint="@color/red"
+        app:borderWidth="3dp"
+        app:elevation="6dp"
         app:layout_behavior="com.mobisys.aspr.util.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>
