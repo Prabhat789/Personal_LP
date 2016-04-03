@@ -43,7 +43,7 @@ public class Utils {
             this.mContext = context;
         }
 
-        public static boolean isConnected(Activity context) {
+        public static boolean isConnected(Context context) {
             ConnectivityManager connMgr = (ConnectivityManager) context
                     .getSystemService(Activity.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -117,8 +117,8 @@ public class Utils {
 
     }
 
-    public static void showToastMessage(Activity mContext, String msg) {
-        LayoutInflater li = mContext.getLayoutInflater();
+    public static void showToastMessage(Context mContext, String msg) {
+        LayoutInflater li = LayoutInflater.from(mContext);
         View layout = li.inflate(R.layout.custom_toast, null);
         TextView txtMsg = (TextView) layout.findViewById(R.id.txtToast);
         txtMsg.setText(msg);
@@ -183,6 +183,11 @@ public class Utils {
 
     public static String getUserFullName() {
         return ParseUser.getCurrentUser().getString("userFullName");
+    }
+    public static String imageUploadTimeStamp(){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
+        return timeStamp;
     }
 
     public static String getUserId() {

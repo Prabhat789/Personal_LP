@@ -8,6 +8,11 @@ public class ApplicationConstant {
     /*public static final String TEXT_FONT_NAME = "alighty.ttf";
     public static final String BUTTON_FONT_NAME = "alighty.ttf";
     public static final String EDIT_TEXT_FONT_NAME = "alighty.ttf";*/
+    public static final String PACKAGE_NAME = "com.mobisys.aspr";
+    public static final String APPLICATION_PREFERENCE_NAME = PACKAGE_NAME+".preference";
+    public static final String INTERVAL_IN_MINUTES = "intervalInMinutes";
+    public static final String MY_OBJECT_ID = "xgMzQ5j4J3";
+    public static final int INTERVAL_TIME = 45;
     public static final String TEXT_FONT_NAME = "HelveticaNeue_regular.ttf";
     public static final String TEXT_FONT_NAME_LITE = "HelveticaNeue-Light.otf";
     public static final String TEXT_FONT_NAME_BOLD = "HelveticaNeue-Bold.otf";

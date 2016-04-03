@@ -65,10 +65,8 @@ import com.pktworld.aspr.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -206,15 +204,14 @@ public class TimelineFragments extends Fragment implements View.OnClickListener,
 
 
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(new Date());
+
         TimeLine timeLine = new TimeLine();
         if (imgFile.exists()) {
             imageBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 45, stream);
             ImageArray = stream.toByteArray();
-            ParseFile file = new ParseFile("android" + timeStamp + ".JPEG", ImageArray);
+            ParseFile file = new ParseFile("android" + Utils.imageUploadTimeStamp() + ".JPEG", ImageArray);
             file.saveInBackground();
             timeLine.setPostImage(file);
             timeLine.setDateTime(Utils.getCurrentTimeStamp());
