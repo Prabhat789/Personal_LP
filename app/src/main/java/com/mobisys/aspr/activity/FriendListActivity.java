@@ -115,7 +115,7 @@ public class FriendListActivity extends FragmentActivity implements OnClickListe
  
             }};
             //Add New Tab
-            actionBar.addTab(actionBar.newTab().setText("My Friends").setTabListener(tabListener));
+            actionBar.addTab(actionBar.newTab().setText("My FriendsResponse").setTabListener(tabListener));
            // actionBar.addTab(actionBar.newTab().setText("Near my Location").setTabListener(tabListener));
             actionBar.addTab(actionBar.newTab().setText("All Users").setTabListener(tabListener));
             actionBar.addTab(actionBar.newTab().setText("Settings").setTabListener(tabListener));

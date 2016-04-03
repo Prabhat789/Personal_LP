@@ -1,10 +1,12 @@
 package com.mobisys.aspr.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +20,7 @@ import com.pktworld.aspr.R;
 /**
  * Created by ubuntu1 on 10/3/16.
  */
-public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener{
+public class ForgotPasswordActivity extends Activity implements View.OnClickListener{
 
     private static final String TAG = ForgotPasswordActivity.class.getSimpleName();
     private ProgressDialog mProgressDialog;
@@ -29,6 +31,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_forgot_password);
 
         editEmail = (EditText)findViewById(R.id.editEmail);
@@ -65,6 +70,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                             Log.v(TAG, "An email was successfully sent with reset instructions");
                             llBottom.setVisibility(View.VISIBLE);
                         } else {
+                            Utils.showToastMessage(ForgotPasswordActivity.this,"Something went wrong, Invalid Email.");
                             Log.v(TAG, "Something went wrong. Look at the ParseException to see what's up.");
                         }
                     }

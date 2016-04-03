@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.mobisys.aspr.imageloadingutil.ImageLoader;
 import com.mobisys.aspr.util.ApplicationConstant;
 import com.mobisys.aspr.util.CircularImage;
-import com.mobisys.aspr.util.Utils;
 import com.parse.ParseUser;
 import com.pktworld.aspr.R;
 
@@ -68,7 +67,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.Data
         holder.btnRequestStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.sendPush("Hi Prabhat", Utils.getUserId());
+                //Utils.sendPush("Hi Prabhat", );
             }
         });
 

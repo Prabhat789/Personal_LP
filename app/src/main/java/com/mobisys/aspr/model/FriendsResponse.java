@@ -7,7 +7,7 @@ import com.parse.ParseObject;
  * Created by ubuntu1 on 17/3/16.
  */
 @ParseClassName("Friends")
-public class Friends extends ParseObject {
+public class FriendsResponse extends ParseObject {
 
     public String getUserId() {
         return getString("userId");

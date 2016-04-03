@@ -19,8 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/><uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -55,7 +54,7 @@
         <activity
             android:name="com.mobisys.aspr.activity.SplashActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/MyMaterialTheme">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -159,7 +158,7 @@
 
         <meta-data
             android:name="com.parse.push.notification_icon"
-            android:resource="@mipmap/ic_launcher" />
+            android:resource="@drawable/ic_stat_action_bookmark_outline" />
         <meta-data
             android:name="com.parse.push.gcm_sender_id"
             android:value="id:671352855595" />

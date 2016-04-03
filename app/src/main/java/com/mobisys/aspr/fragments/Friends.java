@@ -21,8 +21,10 @@ import android.view.ViewGroup;
 import com.mobisys.aspr.activity.OneToOneChatActivity;
 import com.mobisys.aspr.activity.SearchActivity;
 import com.mobisys.aspr.adapter.FriendListAdapter;
+import com.mobisys.aspr.model.FriendsResponse;
 import com.mobisys.aspr.util.ApplicationConstant;
 import com.mobisys.aspr.util.SpacesItemDecoration;
+import com.mobisys.aspr.util.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -39,7 +41,7 @@ public class Friends extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     private static final String TAG = Friends.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<com.mobisys.aspr.model.Friends> allFriends;
+    private ArrayList<FriendsResponse> allFriends;
     private FriendListAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -72,7 +74,7 @@ public class Friends extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
-        allFriends = new ArrayList<com.mobisys.aspr.model.Friends>();
+        allFriends = new ArrayList<FriendsResponse>();
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         return rootView;
@@ -87,10 +89,13 @@ public class Friends extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     }
 
     void receiveAllFriends(){
-        ParseQuery<com.mobisys.aspr.model.Friends> query = ParseQuery.getQuery(com.mobisys.aspr.model.Friends.class);
+        ArrayList<String> user = new ArrayList<String>();
+        ParseQuery<FriendsResponse> query = ParseQuery.getQuery(FriendsResponse.class);
         query.setLimit(50);
-        query.findInBackground(new FindCallback<com.mobisys.aspr.model.Friends>() {
-            public void done(List<com.mobisys.aspr.model.Friends> messages, ParseException e) {
+        user.add(Utils.getUserId());
+        query.whereNotContainedIn("userId", user);
+        query.findInBackground(new FindCallback<FriendsResponse>() {
+            public void done(List<FriendsResponse> messages, ParseException e) {
                 if (e == null) {
 
                     allFriends.clear();

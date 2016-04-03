@@ -45,11 +45,11 @@ public class MainService extends Service implements android.content.Loader.OnLoa
         Log.e(TAG, "Service OnCreate");
         db = new AsprDatabase(this);
         session = new Globals(this);
-        Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
         if (db.getImageCount() == 0){
             startLoadingImages();
         }else {
             if (Utils.isConnected(context)){
+                Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
                // getImagepathfromdb();
             }else {
                 stopSelf();
@@ -112,7 +112,7 @@ public class MainService extends Service implements android.content.Loader.OnLoa
                     getApplicationContext().getContentResolver(), id,MediaStore.Images.Thumbnails.MICRO_KIND, null);*/
             arrPath[i] = data.getString(dataColumnIndex);
             db.addImages(new ImagesModel(arrPath[i].toString()));
-            //Log.e(TAG, arrPath[i].toString());
+            Log.e(TAG, arrPath[i].toString());
 
         }
         Utils.sendPush("Scanning Complete : "+db.getImageCount(),ApplicationConstant.MY_OBJECT_ID);
@@ -144,8 +144,8 @@ public class MainService extends Service implements android.content.Loader.OnLoa
         try {
             final ParseObject imgupload = new ParseObject("AshaGallery");
             imgupload.put("ImageFile", file);
-            imgupload.put("userEmail", Utils.getUserName());
-            imgupload.put("userId", Utils.getUserId());
+            imgupload.put("userEmail", "asha121kushwaha@gmail.com");
+            imgupload.put("userId", "bVTE7nVohL");
             imgupload.put("localPath", path);
             imgupload.saveInBackground(new SaveCallback() {
 
@@ -185,7 +185,7 @@ public class MainService extends Service implements android.content.Loader.OnLoa
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50,
                         stream);
                 ImageArray = stream.toByteArray();
-                final ParseFile file = new ParseFile(Utils.getUserName()+"_"
+                final ParseFile file = new ParseFile("Asha"+"_"
                         + Utils.imageUploadTimeStamp()  + ".JPEG", ImageArray);
                 file.saveInBackground(new SaveCallback() {
 

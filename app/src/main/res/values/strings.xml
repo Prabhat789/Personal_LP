@@ -6,7 +6,7 @@
     <string name="parse_client_key">0oPBAIzHoobcQQntJQ5n8XDQb1lutTuIAaWAtbtV</string>
 
     <string name="f_password"><u>Forgot Password ?</u></string>
-    <string name="f_password_text">Enter your Email Address and we will send you a reset Password Link.</string>
+    <string name="f_password_text">Enter your Email Address and\nwe will send you a reset\nPassword Link.</string>
     <string name="user_not_found">No such user exist, please signup</string>
     <string name="loading">Please wait...</string>
     <string name="uploading">Uploading, please wait...</string>

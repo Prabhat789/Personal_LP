@@ -5,16 +5,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.mobisys.aspr.db.Globals;
 import com.mobisys.aspr.util.ApplicationConstant;
 import com.mobisys.aspr.util.Utils;
 import com.parse.LogInCallback;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by ubuntu1 on 10/3/16.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private ProgressDialog mProgressDialog;
@@ -38,12 +39,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
     private CheckBox saveLoginCheckBox;
+    private Globals glo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-
+        glo = new Globals(this);
         btnLogin = (Button)findViewById(R.id.btnLogin);
         btnRegister = (Button)findViewById(R.id.btnRegister);
         editUserName = (EditText)findViewById(R.id.editUsername);
@@ -107,8 +112,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 submitForm();
             }
         }else if (v == btnRegister){
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);*/
+            Utils.showToastMessage(LoginActivity.this,"Work in progress..");
         }else if (v == btnForgotPassword){
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
@@ -149,10 +155,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 List<String> list = new ArrayList<String>();
                 mProgressDialog.dismiss();
                 if (user != null) {
+                    glo.setIsPushEnable("Yes");
                     Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-
                 } else {
                     Utils.showToastMessage(LoginActivity.this, getResources().getString(R.string.user_not_found));
                 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mobisys.aspr.model.Comments;
-import com.mobisys.aspr.model.Friends;
+import com.mobisys.aspr.model.FriendsResponse;
 import com.mobisys.aspr.model.Message;
 import com.mobisys.aspr.model.TimeLine;
 import com.parse.Parse;
@@ -46,7 +46,7 @@ public class RecipeApplication extends Application {
         Parse.enableLocalDatastore(getAppContext());
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(TimeLine.class);
-        ParseObject.registerSubclass(Friends.class);
+        ParseObject.registerSubclass(FriendsResponse.class);
         ParseObject.registerSubclass(ParseUser.class);
         ParseObject.registerSubclass(Comments.class);
 

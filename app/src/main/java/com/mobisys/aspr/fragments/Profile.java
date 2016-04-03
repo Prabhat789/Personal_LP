@@ -2,19 +2,25 @@ package com.mobisys.aspr.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mobisys.aspr.activity.LoginActivity;
 import com.mobisys.aspr.activity.MapsActivity;
+import com.mobisys.aspr.db.Globals;
 import com.mobisys.aspr.imageloadingutil.ImageLoader;
 import com.mobisys.aspr.util.ApplicationConstant;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.pktworld.aspr.R;
 
@@ -28,12 +34,16 @@ public class Profile extends Fragment implements View.OnClickListener {
     private ImageLoader imageLoader;
     private LinearLayout llLivesIn, llFrom;
     private TextView txtLivesIn, txtFrom;
-    //private Button btnMessage;
+    private Button btnLogout;
     private FloatingActionButton editProfileButton;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Globals glo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        glo = new Globals(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         userProfileImage = (ImageView)rootView.findViewById(R.id.userProfileImage);
         llFrom = (LinearLayout)rootView.findViewById(R.id.llFrom);
@@ -41,7 +51,7 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         txtFrom = (TextView)rootView.findViewById(R.id.txtFrom);
         txtLivesIn = (TextView)rootView.findViewById(R.id.txtLivesin);
-        //btnMessage = (Button)rootView.findViewById(R.id.btnMessage);
+        btnLogout = (Button)rootView.findViewById(R.id.btnLogout);
         editProfileButton = (FloatingActionButton)rootView.findViewById(R.id.editProfileButton);
         imageLoader =  ImageLoader.getInstance(getActivity());
 
@@ -49,7 +59,7 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         llLivesIn.setOnClickListener(this);
         llFrom.setOnClickListener(this);
-       // btnMessage.setOnClickListener(this);
+        btnLogout.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
 
 
@@ -79,10 +89,24 @@ public class Profile extends Fragment implements View.OnClickListener {
             i.putExtra(ApplicationConstant.LATITUDE,"0.00");
             i.putExtra(ApplicationConstant.LONGITUDE,"0.00");
             startActivity(i);
-        }/*else if (v == btnMessage){
-            Intent i = new Intent(getActivity(), OneToOneChatActivity.class);
-            startActivity(i);
-        }*/else if(v == editProfileButton){
+        }else if (v == btnLogout){
+            ParseUser.logOutInBackground(new LogOutCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null){
+                        loginPreferences = getActivity().getSharedPreferences(ApplicationConstant.LOGIN_PREFERENCE,
+                                getActivity().MODE_PRIVATE);
+                        loginPrefsEditor = loginPreferences.edit();
+                        loginPrefsEditor.clear();
+                        loginPrefsEditor.commit();
+                        glo.setIsPushEnable("No");
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                }
+            });
+        }else if(v == editProfileButton){
 
         }
     }

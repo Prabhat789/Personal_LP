@@ -22,11 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/parse_title"
-            android:paddingBottom="10dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp">
-            <EditText
+            android:padding="10dp">
+            <com.mobisys.aspr.widgets.CustomEditText
                 android:id="@+id/etMessage"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -34,11 +31,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/btSend"
                 android:background="@drawable/btn_rounded_corner_white"
-                android:gravity="clip_vertical|left"
+                android:gravity="left|center_vertical"
                 android:hint="Message"
                 android:inputType="textShortMessage"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:textSize="@dimen/small_text"
                 android:textColor="@color/black"
                 android:textColorHint="@color/smoke_white"
                 />
@@ -50,12 +48,12 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/btn_rounded_corner_parse_green"
                 android:gravity="center"
-                android:paddingRight="10dp"
                 android:text="Send"
+                android:elevation="4dp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"></com.mobisys.aspr.widgets.CustomButton>
+                android:textSize="@dimen/medium_text"
+                android:textStyle="normal"></com.mobisys.aspr.widgets.CustomButton>
         </RelativeLayout>
     </RelativeLayout>
 

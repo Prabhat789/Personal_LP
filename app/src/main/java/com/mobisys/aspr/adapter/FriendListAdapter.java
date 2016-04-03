@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobisys.aspr.imageloadingutil.ImageLoader;
-import com.mobisys.aspr.model.Friends;
+import com.mobisys.aspr.model.FriendsResponse;
 import com.mobisys.aspr.util.ApplicationConstant;
 import com.mobisys.aspr.util.CircularImage;
 import com.pktworld.aspr.R;
@@ -25,12 +25,12 @@ import java.util.List;
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.DataObjectHolder> {
 
     private static final String TAG = TimeLineAdapter.class.getSimpleName();
-    private List<Friends> mDataset;
+    private List<FriendsResponse> mDataset;
     private Context mContext;
     private ImageLoader imageLoader;
 
 
-    public FriendListAdapter(Context context, List<Friends> myDataset) {
+    public FriendListAdapter(Context context, List<FriendsResponse> myDataset) {
         mDataset = myDataset;
         mContext = context;
         imageLoader = ImageLoader.getInstance(mContext);
@@ -75,7 +75,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Da
 
     }
 
-    public void addItem(Friends dataObj, int index) {
+    public void addItem(FriendsResponse dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

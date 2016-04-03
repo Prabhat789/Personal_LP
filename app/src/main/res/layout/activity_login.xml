@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/application_background"
+    android:background="@drawable/login_bg"
     android:orientation="vertical">
     <RelativeLayout
         android:id="@+id/LoginContainer"
@@ -11,12 +11,24 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:orientation="vertical">
+        <com.mobisys.aspr.widgets.CustomFontAwesome
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fa_icon_heart"
+            android:textSize="40dp"
+            android:textColor="@color/parse_title"
+            android:id="@+id/textView2"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp" />
 
         <LinearLayout
             android:id="@+id/llemailpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/textView2"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="10dp"
