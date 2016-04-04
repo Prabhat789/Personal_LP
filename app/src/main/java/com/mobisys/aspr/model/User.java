@@ -32,4 +32,11 @@ public class User extends ParseUser {
     public void setEmail(String email) {
         put("email", email);
     }
+    public String getFullName() {
+        return getString("userFullName");
+    }
+
+    public void setFullName(String email) {
+        put("userFullName", email);
+    }
 }

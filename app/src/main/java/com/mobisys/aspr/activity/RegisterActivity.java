@@ -157,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
             snackbar.setActionTextColor(Color.RED);
 
         }else {
+
             snackbar = Snackbar
                     .make(coordinatorLayout, "Email Already Taken by another User.", Snackbar.LENGTH_LONG);
                     /*.setAction("RETRY", new View.OnClickListener() {

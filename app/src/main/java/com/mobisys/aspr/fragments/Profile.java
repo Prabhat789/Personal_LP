@@ -19,6 +19,7 @@ import com.mobisys.aspr.activity.MapsActivity;
 import com.mobisys.aspr.db.Globals;
 import com.mobisys.aspr.imageloadingutil.ImageLoader;
 import com.mobisys.aspr.util.ApplicationConstant;
+import com.mobisys.aspr.util.Utils;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -33,7 +34,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     private ImageView userProfileImage;
     private ImageLoader imageLoader;
     private LinearLayout llLivesIn, llFrom;
-    private TextView txtLivesIn, txtFrom;
+    private TextView txtLivesIn, txtFrom, txtName, txtEmail;
     private Button btnLogout;
     private FloatingActionButton editProfileButton;
     private SharedPreferences loginPreferences;
@@ -51,11 +52,16 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         txtFrom = (TextView)rootView.findViewById(R.id.txtFrom);
         txtLivesIn = (TextView)rootView.findViewById(R.id.txtLivesin);
+        txtName = (TextView)rootView.findViewById(R.id.textView);
+        txtEmail = (TextView)rootView.findViewById(R.id.txtEmail);
+
         btnLogout = (Button)rootView.findViewById(R.id.btnLogout);
         editProfileButton = (FloatingActionButton)rootView.findViewById(R.id.editProfileButton);
         imageLoader =  ImageLoader.getInstance(getActivity());
 
         loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),userProfileImage,getActivity());
+        txtName.setText(Utils.getUserFullName());
+        txtEmail.setText(Utils.getUserEmail());
 
         llLivesIn.setOnClickListener(this);
         llFrom.setOnClickListener(this);

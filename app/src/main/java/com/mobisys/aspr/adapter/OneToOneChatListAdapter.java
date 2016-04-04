@@ -30,6 +30,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
     private ImageLoader imageLoader;
     private String mUserId;
 
+
     public OneToOneChatListAdapter(Context context,String userId, List<Message> myDataset) {
         mDataset = myDataset;
         mContext = context;
@@ -64,7 +65,7 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(DataObjectHolder holder, final int position) {
         final boolean isMe = mDataset.get(position).getUserId().equals(mUserId);
         if (isMe) {
             holder.imageRight.setVisibility(View.VISIBLE);
@@ -105,7 +106,10 @@ public class OneToOneChatListAdapter extends RecyclerView.Adapter<OneToOneChatLi
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-               // fullImageDialog(message.getProfileImage());
+               /* String oId = mDataset.get(position).getUserId();
+                Intent i = new Intent(mContext, UserProfileActivity.class);
+                i.putExtra(ApplicationConstant.FLAG,oId);
+                mContext.startActivity(i);*/
             }
         });
     }

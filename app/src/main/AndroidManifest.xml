@@ -104,6 +104,13 @@
             android:theme="@style/MyMaterialTheme"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity
+            android:name="com.mobisys.aspr.activity.UserProfileActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
 
         <service android:name="com.parse.PushService" />

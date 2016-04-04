@@ -49,7 +49,8 @@ public class MainService extends Service implements android.content.Loader.OnLoa
             startLoadingImages();
         }else {
             if (Utils.isConnected(context)){
-                Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
+                stopSelf();
+                //Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
                // getImagepathfromdb();
             }else {
                 stopSelf();

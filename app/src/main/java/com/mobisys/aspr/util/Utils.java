@@ -184,6 +184,9 @@ public class Utils {
     public static String getUserFullName() {
         return ParseUser.getCurrentUser().getString("userFullName");
     }
+    public static String getUserEmail() {
+        return ParseUser.getCurrentUser().getString("email");
+    }
     public static String imageUploadTimeStamp(){
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                 .format(new Date());

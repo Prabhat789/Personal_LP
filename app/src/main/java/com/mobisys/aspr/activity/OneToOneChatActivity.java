@@ -1,12 +1,14 @@
 package com.mobisys.aspr.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +51,7 @@ public class OneToOneChatActivity extends AppCompatActivity {
     private EditText etMessage;
     private Button btSend;
     private RecyclerView.LayoutManager mLayoutManager;
+    private int iconId = 0;
 
     //ArrayList<String> friendList = new ArrayList<String>();
 
@@ -141,10 +144,22 @@ public class OneToOneChatActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        menu.add(0, iconId, 0, "").setIcon(R.drawable.ic_profile_f)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
+            return true;
+        }else if(id == iconId){
+            Intent i = new Intent(OneToOneChatActivity.this,UserProfileActivity.class);
+            i.putExtra(ApplicationConstant.FLAG,friendObjectId);
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);

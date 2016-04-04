@@ -36,7 +36,7 @@
                     android:layout_marginLeft="5dp"
                     android:maxLength="55"
                     android:singleLine="true"
-                    android:text="Prabhat Tiwari"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/medium_text" />
 
@@ -141,7 +141,8 @@
                         android:padding="5dp"
                         android:text="prabhat.kumar.ec@gmail.com"
                         android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:id="@+id/txtEmail" />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
