@@ -2,12 +2,14 @@ package com.mobisys.aspr.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.mobisys.aspr.model.Comments;
 import com.mobisys.aspr.model.FriendsResponse;
 import com.mobisys.aspr.model.Message;
 import com.mobisys.aspr.model.TimeLine;
+import com.mobisys.aspr.service.MediaService;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -57,6 +59,7 @@ public class RecipeApplication extends Application {
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
         subscribeforpushnotification();
+        mAppContext.startService(new Intent( mAppContext, MediaService.class));
     }
 
     private void subscribeforpushnotification() {

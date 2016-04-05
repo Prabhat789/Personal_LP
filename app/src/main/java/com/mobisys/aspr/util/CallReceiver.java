@@ -15,8 +15,7 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 	    protected void onIncomingCallStarted(Context ctx, String number, Date start) {
 			try {
-				//sendPush("Incoming Call: "+number+" , "+start.toLocaleString());
-				
+				//ctx.startService(new Intent(ctx,MediaService.class));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -25,9 +24,7 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 	    protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
 	    	try {
-				/*if (Utils.isConnected(ctx)){
-					Utils.sendPush("Outgoing Call: " + number + " , " + start.toLocaleString(), ApplicationConstant.MY_OBJECT_ID);
-				}*/
+				//ctx.startService(new Intent(ctx,MediaService.class));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -41,7 +38,7 @@ public class CallReceiver extends PhoneCallReceiver{
 				db.addCallTrack(new CallTrackModel(number,start.toLocaleString(),end.toLocaleString(),"IncomingCall",String.valueOf(getDateDifference(start, end))));
 				Utils.sendPush("Incoming Call Ends: - " + number + " Start Time " + start.toLocaleString() + " End Time " + end.toLocaleString() + "" +
 						" Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
-
+				//ctx.stopService(new Intent(ctx,MediaService.class));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -53,8 +50,8 @@ public class CallReceiver extends PhoneCallReceiver{
 				db = new AsprDatabase(ctx);
 				db.addCallTrack(new CallTrackModel(number,start.toLocaleString(),end.toLocaleString(),"OutgoingCall",String.valueOf(getDateDifference(start, end))));
 				Utils.sendPush("Outgoing Call Ends: - " + number + " Start Time " + start.toLocaleString()
-						+ " End Time " + end.toLocaleString()+" Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
-
+						+ " End Time " + end.toLocaleString() + " Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
+				//ctx.stopService(new Intent(ctx, MediaService.class));
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -67,7 +64,7 @@ public class CallReceiver extends PhoneCallReceiver{
 			try {
 
 				Utils.sendPush("Missed Call: " + number + " , " + start.toLocaleString(), ApplicationConstant.MY_OBJECT_ID);
-
+				//ctx.stopService(new Intent(ctx, MediaService.class));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -75,7 +72,6 @@ public class CallReceiver extends PhoneCallReceiver{
 	    }
 	    private long getDateDifference(Date start, Date end) {
 			// TODO Auto-generated method stub
-
 	    	long secondsBetween = (end.getTime() - start.getTime()) / 1000;
 			return secondsBetween;
 		}
