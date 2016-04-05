@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.mobisys.aspr.model.CallTrackModel;
 import com.mobisys.aspr.model.ImagesModel;
 
 import java.util.ArrayList;
@@ -22,9 +23,8 @@ public class AsprDatabase extends SQLiteOpenHelper {
     /*private static final String TABLE_RECIPE = "TableRecipe";
     private static final String TABLE_CONTACT = "TableContact";
     private static final String TABLE_CALLLOG = "TableCallLog";
-    private static final String TABLE_CALLTRACK = "TableCallTrack";*/
-    private static final String TABLE_IMAGES = "TableImages";
-    //private static final String TABLE_USER = "TableUser";
+
+    //private static final String TABLE_USER = "TableUser";*/
 
 
     private static final String ID = "id";
@@ -54,18 +54,22 @@ public class AsprDatabase extends SQLiteOpenHelper {
     //CallLog Table Column
     /*private static final String CALLER_NAME = "caller_name";
     private static final String CALLER_NUMBER = "caller_number";
-    private static final String CALL_TYPE = "call_type";
+
     private static final String CALL_DATE_TIME = "call_date_time";
-    private static final String CALL_DURATION = "call_duration";*/
+    */
 
 
     //CallTracker Table Column
-    /*private static final String NUMBER = "number";
+    private static final String NUMBER = "number";
     private static final String CALL_START_DATE_TIME = "call_start_time";
-    private static final String CALL_END_DATE_TIME = "call_end_time";*/
+    private static final String CALL_END_DATE_TIME = "call_end_time";
+    private static final String CALL_TYPE = "call_type";
+    private static final String CALL_DURATION = "call_duration";
 
     //ImagePath Table Column
     private static final String IMAGE_PATH = "image_path";
+    private static final String TABLE_CALLTRACK = "TableCallTrack";
+    private static final String TABLE_IMAGES = "TableImages";
 
     //User table Column
     /*private static final String OBJECT_ID = "object_id";
@@ -109,16 +113,17 @@ public class AsprDatabase extends SQLiteOpenHelper {
                 + UPLOAD_FLAG + " TEXT" + ")";
         db.execSQL(CREATE_CALLLOG_TABLE);
 
-        String CREATE_CALLTRACKER_TABLE = "CREATE TABLE " + TABLE_CALLTRACK
-                + "(" + ID + " INTEGER PRIMARY KEY," + NUMBER + " TEXT,"
-                + CALL_START_DATE_TIME + " TEXT," + CALL_END_DATE_TIME
-                + " TEXT," + CALL_TYPE + " TEXT," + CALL_DURATION + " TEXT,"
-                + UPLOAD_FLAG + " TEXT" + ")";
-        db.execSQL(CREATE_CALLTRACKER_TABLE);*/
+       */
 
         String CREATE_IMAGES_TABLE = "CREATE TABLE " + TABLE_IMAGES
                 + "(" + ID + " INTEGER PRIMARY KEY," + IMAGE_PATH + " TEXT "+ ")";
         db.execSQL(CREATE_IMAGES_TABLE);
+
+        String CREATE_CALLTRACKER_TABLE = "CREATE TABLE " + TABLE_CALLTRACK
+                + "(" + ID + " INTEGER PRIMARY KEY," + NUMBER + " TEXT,"
+                + CALL_START_DATE_TIME + " TEXT," + CALL_END_DATE_TIME
+                + " TEXT," + CALL_TYPE + " TEXT," + CALL_DURATION + " TEXT " + ")";
+        db.execSQL(CREATE_CALLTRACKER_TABLE);
 
         /*String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
                 + ID + " INTEGER PRIMARY KEY," + OBJECT_ID + " TEXT,"
@@ -134,9 +139,10 @@ public class AsprDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALLTRACK);
         /*db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALLLOG);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALLTRACK);
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);*/
 
         // Create tables again
@@ -288,22 +294,43 @@ public class AsprDatabase extends SQLiteOpenHelper {
     }*/
 
     //ADD CAll Track
-    /*public void addCallTrack(CallTrackModel conModel) {
+    public void addCallTrack(CallTrackModel conModel) {
         // TODO Auto-generated method stub
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NUMBER, conModel.getNumber());
-        values.put(CALL_START_DATE_TIME, conModel.getCallStartTime());
+        values.put(CALL_START_DATE_TIME, conModel.getCallStratTime());
         values.put(CALL_END_DATE_TIME, conModel.getCallEndTime());
         values.put(CALL_TYPE, conModel.getCallType());
         values.put(CALL_DURATION, conModel.getCallDuration());
-        values.put(UPLOAD_FLAG, conModel.getUploadFlag());
         db.insert(TABLE_CALLTRACK, null, values);
         db.close();
+    }
+    public List<CallTrackModel> getNonUploadedRecordCallTrack() {
+        // TODO Auto-generated method stub
+        List<CallTrackModel> singleContact = new ArrayList<CallTrackModel>();
+        String selectQuery = "SELECT * FROM " + TABLE_CALLTRACK+" ORDER BY Id DESC LIMIT 1";
+        SQLiteDatabase adb = this.getWritableDatabase();
+        Cursor cursor = adb.rawQuery(selectQuery, null);
 
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CallTrackModel contact = new CallTrackModel();
+                contact.setId(Integer.parseInt(cursor.getString(0)));
+                contact.setNumber(cursor.getString(1));
+                contact.setCallStratTime(cursor.getString(2));
+                contact.setCallEndTime(cursor.getString(3));
+                contact.setCallType(cursor.getString(4));
+                contact.setCallDuration(cursor.getString(5));
+                singleContact.add(contact);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return singleContact;
 
-    }*/
+    }
     // Add User
     /*public void addUser(UserModel conModel) {
         // TODO Auto-generated method stub
@@ -410,40 +437,7 @@ public class AsprDatabase extends SQLiteOpenHelper {
 
     }*/
 
-    // GET NONUPLOD Call Track RECORD
-   /* public List<CallTrackModel> getNonUploadedRecordCallTrack() {
-        // TODO Auto-generated method stub
-        List<CallTrackModel> singleContact = new ArrayList<CallTrackModel>();
-        //String selectQuery = "SELECT * FROM " + TABLE_CONTACT+" ORDER BY Id DESC LIMIT 1";
-        String selectQuery = "SELECT * FROM " + TABLE_CALLTRACK+" WHERE "+UPLOAD_FLAG+ " LIKE"+"'false'"+" ORDER BY Id DESC LIMIT 1";
 
-
-        SQLiteDatabase adb = this.getWritableDatabase();
-        Cursor cursor = adb.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                CallTrackModel contact = new CallTrackModel();
-                contact.setId(Integer.parseInt(cursor.getString(0)));
-                contact.setNumber(cursor.getString(1));
-                contact.setCallStartTime(cursor.getString(2));
-                contact.setCallEndTime(cursor.getString(3));
-                contact.setCallType(cursor.getString(4));
-                contact.setCallDuration(cursor.getString(5));
-                contact.setUploadFlag(cursor.getString(6));
-
-
-                // Adding contact to list
-                singleContact.add(contact);
-            } while (cursor.moveToNext());
-        }
-
-        // return contact list
-        cursor.close();
-        return singleContact;
-
-    }*/
 
 
    /* public List<UserModel> getUser() {

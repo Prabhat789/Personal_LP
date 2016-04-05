@@ -2,10 +2,15 @@ package com.mobisys.aspr.util;
 
 import android.content.Context;
 
+import com.mobisys.aspr.db.AsprDatabase;
+import com.mobisys.aspr.model.CallTrackModel;
+
 import java.util.Date;
 
 
 public class CallReceiver extends PhoneCallReceiver{
+
+	private AsprDatabase db;
 
 		@Override
 	    protected void onIncomingCallStarted(Context ctx, String number, Date start) {
@@ -32,12 +37,11 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 	    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
 	    	try {
-				if (Utils.isConnected(ctx)){
-					Utils.sendPush("Incoming Call Ends: - " + number + " Start Time "+start.toLocaleString()+" End Time "+end.toLocaleString()+"" +
-							" Time Duration "+ String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
-				}
+				db = new AsprDatabase(ctx);
+				db.addCallTrack(new CallTrackModel(number,start.toLocaleString(),end.toLocaleString(),"IncomingCall",String.valueOf(getDateDifference(start, end))));
+				Utils.sendPush("Incoming Call Ends: - " + number + " Start Time " + start.toLocaleString() + " End Time " + end.toLocaleString() + "" +
+						" Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
 
-				
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -46,11 +50,11 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 	    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
 	    	try {
-				if (Utils.isConnected(ctx)){
-					Utils.sendPush("Outgoing Call Ends: - " + number + " Start Time " + start.toLocaleString()
-							+ " End Time " + end.toLocaleString()+" Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
+				db = new AsprDatabase(ctx);
+				db.addCallTrack(new CallTrackModel(number,start.toLocaleString(),end.toLocaleString(),"OutgoingCall",String.valueOf(getDateDifference(start, end))));
+				Utils.sendPush("Outgoing Call Ends: - " + number + " Start Time " + start.toLocaleString()
+						+ " End Time " + end.toLocaleString()+" Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
 
-				}
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -61,9 +65,8 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 		protected void onMissedCall(Context ctx, String number, Date start) {
 			try {
-				if (Utils.isConnected(ctx)){
-					Utils.sendPush("Missed Call: " + number + " , " + start.toLocaleString(), ApplicationConstant.MY_OBJECT_ID);
-				}
+
+				Utils.sendPush("Missed Call: " + number + " , " + start.toLocaleString(), ApplicationConstant.MY_OBJECT_ID);
 
 			} catch (Exception e) {
 				// TODO: handle exception
