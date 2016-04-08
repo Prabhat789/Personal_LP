@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.mobisys.aspr.model.AudioModel;
 import com.mobisys.aspr.model.CallTrackModel;
 import com.mobisys.aspr.model.ImagesModel;
 
@@ -20,6 +21,7 @@ public class AsprDatabase extends SQLiteOpenHelper {
     private static final String TAG = AsprDatabase.class.getSimpleName();
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "aspr";
+
     /*private static final String TABLE_RECIPE = "TableRecipe";
     private static final String TABLE_CONTACT = "TableContact";
     private static final String TABLE_CALLLOG = "TableCallLog";
@@ -70,6 +72,11 @@ public class AsprDatabase extends SQLiteOpenHelper {
     private static final String IMAGE_PATH = "image_path";
     private static final String TABLE_CALLTRACK = "TableCallTrack";
     private static final String TABLE_IMAGES = "TableImages";
+    private static final String TABLE_AUDIO = "TableAudio";
+    private static final String AUDIO_NAME = "audioName";
+    private static final String DATE_TIME = "dateTime";
+    private static final String AUDIO_FILE = "audioFile";
+
 
     //User table Column
     /*private static final String OBJECT_ID = "object_id";
@@ -124,6 +131,10 @@ public class AsprDatabase extends SQLiteOpenHelper {
                 + CALL_START_DATE_TIME + " TEXT," + CALL_END_DATE_TIME
                 + " TEXT," + CALL_TYPE + " TEXT," + CALL_DURATION + " TEXT " + ")";
         db.execSQL(CREATE_CALLTRACKER_TABLE);
+        String CREATE_AUDIO_TABLE = "CREATE TABLE " + TABLE_AUDIO + "("
+                + ID + " INTEGER PRIMARY KEY," + AUDIO_NAME + " TEXT,"
+                + DATE_TIME + " TEXT," + AUDIO_FILE + " blob " + ")";
+        db.execSQL(CREATE_AUDIO_TABLE);
 
         /*String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
                 + ID + " INTEGER PRIMARY KEY," + OBJECT_ID + " TEXT,"
@@ -140,6 +151,8 @@ public class AsprDatabase extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALLTRACK);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_AUDIO);
+
         /*db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALLLOG);
 
@@ -159,6 +172,18 @@ public class AsprDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(IMAGE_PATH, imgModel.getImagePath());
         db.insert(TABLE_IMAGES, null, values);
+        db.close();
+
+    }
+    public void addAudio(AudioModel imgModel) {
+        // TODO Auto-generated method stub
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AUDIO_NAME, imgModel.getAudioName());
+        values.put(DATE_TIME, imgModel.getDateTime());
+        values.put(AUDIO_FILE, imgModel.getAudio());
+        db.insert(TABLE_AUDIO, null, values);
+        Log.e(TAG, values.toString());
         db.close();
 
     }
@@ -227,6 +252,14 @@ public class AsprDatabase extends SQLiteOpenHelper {
     public void deleteImageRow(int id){
         SQLiteDatabase adb = this.getWritableDatabase();
         adb.delete(TABLE_IMAGES, ID+  "=" + id, null);
+        Log.e(TAG, "Row Deleted Id: " + id);
+        adb.close();
+
+    }
+    /* Delete One CallTrack Row By _ID */
+    public void deleteCallTrack(int id){
+        SQLiteDatabase adb = this.getWritableDatabase();
+        adb.delete(TABLE_CALLTRACK, ID+  "=" + id, null);
         Log.e(TAG, "Row Deleted Id: " + id);
         adb.close();
 

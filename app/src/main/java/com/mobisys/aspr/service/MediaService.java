@@ -1,3 +1,4 @@
+/*
 package com.mobisys.aspr.service;
 
 import android.app.Service;
@@ -8,6 +9,9 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.mobisys.aspr.db.AsprDatabase;
+import com.mobisys.aspr.db.Globals;
+import com.mobisys.aspr.model.AudioModel;
+import com.mobisys.aspr.util.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,9 +19,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+*/
 /**
  * Created by ubuntu1 on 5/4/16.
- */
+ *//*
+
 
 
 public class MediaService extends Service {
@@ -29,6 +35,7 @@ public class MediaService extends Service {
     private MediaRecorder recorder = null;
     private byte [] audioArray = null;
     private AsprDatabase db;
+    private Globals glo;
 
 
     @Override
@@ -36,6 +43,7 @@ public class MediaService extends Service {
         // TODO Auto-generated method stub
         super.onCreate();
         db = new AsprDatabase(MediaService.this);
+        glo = new Globals(MediaService.this);
         audioArray = null;
     }
 
@@ -75,7 +83,7 @@ public class MediaService extends Service {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         recorder.setOutputFile(getFilename());
-       // glo.setFilePath(getFilename());
+        glo.setfileName(getFilename());
         recorder.setMaxDuration(RECORDING_TIME);
         recorder.setOnErrorListener(errorListener);
         recorder.setOnInfoListener(infoListener);
@@ -101,10 +109,14 @@ public class MediaService extends Service {
             recorder.release();
             Log.v(TAG, "Recording Stop");
             recorder = null;
-
+            File f = new File(glo.getfileName());
+            db.addAudio(new AudioModel(getFilename(), Utils.imageUploadTimeStamp(),convertFileToByteArray(f)));
+            f.delete();
             startRecording();
-            /*Log.e(TAG, glo.getFilePath());
-            triggerEvent(AudioRecordService.this);*/
+            */
+/*Log.e(TAG, glo.getFilePath());
+            triggerEvent(AudioRecordService.this);*//*
+
 
         }
     }
@@ -128,11 +140,13 @@ public class MediaService extends Service {
 
 
 
-	/*private String getFilePath(String fileName){
+	*/
+/*private String getFilePath(String fileName){
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording1.3gp";;
 		return null;
 
-	}*/
+	}*//*
+
 
     public static byte[] convertFileToByteArray(File f) {
         byte[] byteArray = null;
@@ -156,3 +170,4 @@ public class MediaService extends Service {
 
 
 }
+*/

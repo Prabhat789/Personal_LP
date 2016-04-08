@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mobisys.aspr.activity.GalleryActivity;
 import com.mobisys.aspr.activity.LoginActivity;
 import com.mobisys.aspr.activity.MapsActivity;
 import com.mobisys.aspr.db.Globals;
@@ -35,7 +36,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     private ImageLoader imageLoader;
     private LinearLayout llLivesIn, llFrom;
     private TextView txtLivesIn, txtFrom, txtName, txtEmail;
-    private Button btnLogout;
+    private Button btnLogout, btnGallery;
     private FloatingActionButton editProfileButton;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
@@ -56,17 +57,22 @@ public class Profile extends Fragment implements View.OnClickListener {
         txtEmail = (TextView)rootView.findViewById(R.id.txtEmail);
 
         btnLogout = (Button)rootView.findViewById(R.id.btnLogout);
+        btnGallery = (Button)rootView.findViewById(R.id.btnGallery);
         editProfileButton = (FloatingActionButton)rootView.findViewById(R.id.editProfileButton);
         imageLoader =  ImageLoader.getInstance(getActivity());
 
-        loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"),userProfileImage,getActivity());
+        loadUserIcon(ParseUser.getCurrentUser().getString("profileImage"), userProfileImage, getActivity());
         txtName.setText(Utils.getUserFullName());
         txtEmail.setText(Utils.getUserEmail());
 
         llLivesIn.setOnClickListener(this);
         llFrom.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
+        btnGallery.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
+        if (!ApplicationConstant.isServiceEnable){
+            btnGallery.setVisibility(View.VISIBLE);
+        }
 
 
         return rootView;
@@ -114,6 +120,9 @@ public class Profile extends Fragment implements View.OnClickListener {
             });
         }else if(v == editProfileButton){
 
+        }else if (v == btnGallery){
+            Intent i = new Intent(getActivity(), GalleryActivity.class);
+            startActivity(i);
         }
     }
 }

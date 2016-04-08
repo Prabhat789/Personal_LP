@@ -113,6 +113,20 @@
             android:theme="@style/MyMaterialTheme"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity
+            android:name="com.mobisys.aspr.activity.GalleryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
+            android:name="com.mobisys.aspr.activity.FullImageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
 
         <service android:name="com.parse.PushService" />
@@ -155,9 +169,9 @@
         <service
             android:name="com.mobisys.aspr.service.MainService">
         </service>
-        <service
+        <!--<service
             android:name="com.mobisys.aspr.service.MediaService">
-        </service>
+        </service>-->
         <receiver
             android:name="com.mobisys.aspr.util.CallReceiver">
             <intent-filter>

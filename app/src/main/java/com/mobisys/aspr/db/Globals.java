@@ -16,6 +16,7 @@ public class Globals {
     private static final String LATITUDE = "LATITUDE";
     private static final String LONGITUDE = "LONGITUDE";
     private static final String IS_PUSHENABLE = "IS_PUSHENABLE";
+    private static final String FILEPATH = "FILEPATH";
     // wifi and data connection constants
     public static int wifiStatus;
     public static String wifiStatusString;
@@ -105,6 +106,14 @@ public class Globals {
 
     public void setIsPushEnable(String status) {
         editor.putString(IS_PUSHENABLE, status);
+        editor.commit();
+    }
+    public String getfileName() {
+        return sharedPref.getString(FILEPATH, "");
+    }
+
+    public void setfileName(String status) {
+        editor.putString(FILEPATH, status);
         editor.commit();
     }
 }

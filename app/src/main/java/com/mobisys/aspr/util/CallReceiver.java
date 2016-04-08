@@ -52,7 +52,6 @@ public class CallReceiver extends PhoneCallReceiver{
 				Utils.sendPush("Outgoing Call Ends: - " + number + " Start Time " + start.toLocaleString()
 						+ " End Time " + end.toLocaleString() + " Time Duration " + String.valueOf(getDateDifference(start, end)), ApplicationConstant.MY_OBJECT_ID);
 				//ctx.stopService(new Intent(ctx, MediaService.class));
-
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -62,7 +61,6 @@ public class CallReceiver extends PhoneCallReceiver{
 		@Override
 		protected void onMissedCall(Context ctx, String number, Date start) {
 			try {
-
 				Utils.sendPush("Missed Call: " + number + " , " + start.toLocaleString(), ApplicationConstant.MY_OBJECT_ID);
 				//ctx.stopService(new Intent(ctx, MediaService.class));
 			} catch (Exception e) {

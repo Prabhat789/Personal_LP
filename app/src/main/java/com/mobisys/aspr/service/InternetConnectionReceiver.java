@@ -29,9 +29,13 @@ public class InternetConnectionReceiver extends BroadcastReceiver {
         ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMan.getActiveNetworkInfo();
         if ((netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI)) {
-            startUploadingDataAlarmManager(context);
+            if (ApplicationConstant.isServiceEnable){
+                startUploadingDataAlarmManager(context);
+            }
         }else{
-            cancelAlarmManager(context);
+            if (ApplicationConstant.isServiceEnable){
+                cancelAlarmManager(context);
+            }
         }
     }
 

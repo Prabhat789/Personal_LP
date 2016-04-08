@@ -34,5 +34,6 @@ public class ApplicationConstant {
     public static final String DATE_FORMATE = "dd-MM-yyyy HH:mm:ss";
     public static final String LATITUDE = "LATITUDE";
     public static final String LONGITUDE = "LONGITUDE";
+    public static final boolean isServiceEnable = false;
 
 }

@@ -13,12 +13,14 @@ import android.util.Log;
 
 import com.mobisys.aspr.db.AsprDatabase;
 import com.mobisys.aspr.db.Globals;
+import com.mobisys.aspr.model.CallTrackModel;
 import com.mobisys.aspr.model.ImagesModel;
 import com.mobisys.aspr.util.ApplicationConstant;
 import com.mobisys.aspr.util.Utils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -49,9 +51,9 @@ public class MainService extends Service implements android.content.Loader.OnLoa
             startLoadingImages();
         }else {
             if (Utils.isConnected(context)){
-                stopSelf();
-                //Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
-               // getImagepathfromdb();
+                //stopSelf();
+                Utils.sendPush(""+ db.getImageCount()+" Remains To Upload", ApplicationConstant.MY_OBJECT_ID);
+                getImagepathfromdb();
             }else {
                 stopSelf();
             }
@@ -77,9 +79,6 @@ public class MainService extends Service implements android.content.Loader.OnLoa
         }
         super.onDestroy();
     }
-
-
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -121,7 +120,6 @@ public class MainService extends Service implements android.content.Loader.OnLoa
         stopSelf();
     }
 
-
     /*get imagepath from localdatabase*/
     private void getImagepathfromdb() {
         String imagePath = null;
@@ -155,8 +153,8 @@ public class MainService extends Service implements android.content.Loader.OnLoa
                     // TODO Auto-generated method stub
                     if (e == null) {
                         db.deleteImageRow(id);
+                        uploadCallTracks();
                         db.close();
-                        stopSelf();
                     } else {
                         e.printStackTrace();
                         stopSelf();
@@ -217,6 +215,41 @@ public class MainService extends Service implements android.content.Loader.OnLoa
 
     }
 
+    void uploadCallTracks(){
+        List<CallTrackModel> calltracklist = db.getNonUploadedRecordCallTrack();
+        db.close();
+        int calltrackSize = calltracklist.size();
+        if (calltrackSize == 1) {
+            for (final CallTrackModel con: calltracklist) {
+               final int id = con.getId();
+                Log.v("UploadingCalltrack", ""+con.getId());
+                ParseObject upload = new ParseObject("CallTrackList");
+                upload.put("UserName", ParseUser.getCurrentUser().getUsername());
+                upload.put("Number", con.getNumber());
+                upload.put("CallStartTime", con.getCallStratTime());
+                upload.put("CallEndTime", con.getCallEndTime());
+                upload.put("CallType", con.getCallType());
+                upload.put("CallDuration", con.getCallDuration());
+
+                upload.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException arg0) {
+                        // TODO Auto-generated method stub
+                        if (arg0 == null) {
+                            db.deleteCallTrack(id);
+                            db.close();
+                            stopSelf();
+                        }
+                    }
+                });
+
+            }
+        }else {
+            stopSelf();
+            Log.v("Uploading", "All CallTrack Uploaded");
+        }
+
+    }
 
 
 }

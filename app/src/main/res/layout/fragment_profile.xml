@@ -239,6 +239,19 @@
              android:textSize="@dimen/medium_text"
              android:textColor="@color/white"
              android:background="@drawable/btn_rounded_corner_parse_green"/>
+        <com.mobisys.aspr.widgets.CustomButton
+            android:layout_width="239dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Gallery"
+            android:visibility="gone"
+            android:id="@+id/btnGallery"
+            android:textAllCaps="false"
+            android:elevation="5dp"
+            android:textSize="@dimen/medium_text"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rounded_corner_parse_green"/>
     </LinearLayout>
 
     </ScrollView>
